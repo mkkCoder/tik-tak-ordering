@@ -35,7 +35,7 @@ const LEMON_JS = 'https://assets.lemonsqueezy.com/lemon.js';
 
 interface LemonSqueezyApi {
   Setup: (options: { eventHandler: (event: { event?: string; data?: unknown }) => void }) => void;
-  Url: { Open: (url: string) => void };
+  Url: { Open: (url: string) => void; Close?: () => void };
   Refresh?: () => void;
 }
 
@@ -129,6 +129,22 @@ export async function openCheckout(
       eventHandler: (event) => {
         if (event?.event !== 'Checkout.Success' || paid) return;
         paid = true;
+
+        // Close the overlay ourselves, immediately, before doing anything else.
+        //
+        // Left open, the vendor's own "thank you" panel appears on top with a
+        // button that navigates the whole page away — and the customer, who has
+        // just paid and is looking for a way onward, clicks it. That throws away
+        // the export they were in the middle of and reloads the app. We already
+        // have a better answer for that moment: the key is in this payload, so
+        // Pro comes on in place and the export dialog is still underneath. So
+        // the overlay's last useful act is to get out of the way.
+        try {
+          api.Url.Close?.();
+        } catch {
+          /* if it will not close, the page still works; carry on */
+        }
+
         const key = findLicenseKeyIn(event.data);
         onPaid(key ? { kind: 'activated', key } : { kind: 'paid-no-key' });
       },

@@ -31,7 +31,12 @@ await page.addInitScript(() => {
     Setup: (o) => {
       window.__handler = o.eventHandler;
     },
-    Url: { Open: (url) => window.__opened.push(url) },
+    Url: {
+      Open: (url) => window.__opened.push(url),
+      Close: () => {
+        window.__closed = (window.__closed ?? 0) + 1;
+      },
+    },
   };
 });
 
@@ -75,6 +80,14 @@ await page.evaluate(() =>
     data: { order: { data: { attributes: { license_key: 'TIKTAK-TEST-KEY-0000' } } } },
   }),
 );
+// The overlay must shut itself the moment payment lands, so the vendor's
+// thank-you button never gets the chance to navigate the app away.
+if ((await page.evaluate(() => window.__closed)) !== 1) {
+  fail('the overlay was left open after payment');
+} else {
+  pass('the overlay closes itself on payment');
+}
+
 // Validation cannot reach the vendor from here, so activation fails and the
 // dialog should fall through to the code field — which only happens if the
 // event was seen at all.

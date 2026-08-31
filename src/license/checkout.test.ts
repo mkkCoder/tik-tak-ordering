@@ -8,14 +8,19 @@ const KEY = '3b1f2c8a-9d4e-4a71-b6c2-77e0f1a9d3b4';
 function fakeApi() {
   let handler: ((event: { event?: string; data?: unknown }) => void) | undefined;
   const opened: string[] = [];
+  const closed = { count: 0 };
   return {
     api: {
       Setup: (options: { eventHandler: (event: { event?: string; data?: unknown }) => void }) => {
         handler = options.eventHandler;
       },
-      Url: { Open: (url: string) => void opened.push(url) },
+      Url: {
+        Open: (url: string) => void opened.push(url),
+        Close: () => void (closed.count += 1),
+      },
     },
     opened,
+    closed,
     fire: (event: { event?: string; data?: unknown }) => handler?.(event),
   };
 }
@@ -85,6 +90,31 @@ describe('openCheckout', () => {
     fire({ event: 'Checkout.Success', data: { license_key: KEY } });
 
     expect(onPaid).toHaveBeenCalledTimes(1);
+  });
+
+  it('closes the overlay on success, so the vendor cannot navigate the page away', async () => {
+    // The vendor's own thank-you panel carries a button that reloads the app and
+    // throws away the export in progress. Shut the overlay before it can appear.
+    const { api, fire, closed } = fakeApi();
+
+    await openCheckout(BUY, vi.fn(), { load: () => Promise.resolve(api) });
+    expect(closed.count).toBe(0);
+
+    fire({ event: 'Checkout.Success', data: { license_key: KEY } });
+    expect(closed.count).toBe(1);
+  });
+
+  it('still reports the payment if the overlay refuses to close', async () => {
+    const { api, fire } = fakeApi();
+    api.Url.Close = () => {
+      throw new Error('nope');
+    };
+    const onPaid = vi.fn();
+
+    await openCheckout(BUY, onPaid, { load: () => Promise.resolve(api) });
+    fire({ event: 'Checkout.Success', data: { license_key: KEY } });
+
+    expect(onPaid).toHaveBeenCalledWith({ kind: 'activated', key: KEY });
   });
 
   it('falls back to a new tab when the script cannot be loaded', async () => {
