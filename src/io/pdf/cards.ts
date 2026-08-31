@@ -39,17 +39,24 @@ export interface SheetSpec {
 const IN = 25.4;
 
 /**
- * Avery 5302 small tent cards: 3.5in × 2in folded, two per Letter sheet, each
- * slot 4in tall before folding.
+ * Avery 5302 small tent cards: 3.5in × 2in folded, FOUR per Letter sheet in a
+ * 2 × 2 grid, each slot 4in tall before folding along its middle.
+ *
+ * This used to say one column, two per sheet, and it was wrong. Avery's own
+ * spec is 160 cards across 40 sheets — four to a sheet — and the arithmetic
+ * agrees: two 3.5in columns leave 0.75in either side of a Letter page, two 4in
+ * rows leave 1.5in top and bottom, both centred, which is how Avery lays stock
+ * out. Printing one centred column put every card across the perforation
+ * between the two real columns, and threw away half the packet.
  */
 export const AVERY_5302: SheetSpec = {
   id: 'avery5302',
-  label: 'Avery 5302 tent cards (3.5 × 2 in)',
+  label: 'Avery 5302 tent cards (3.5 × 2 in, 4 per sheet)',
   page: { width: 8.5 * IN, height: 11 * IN },
   card: { width: 3.5 * IN, height: 2 * IN },
-  columns: 1,
+  columns: 2,
   rows: 2,
-  margin: { top: 1.5 * IN, left: 2.5 * IN },
+  margin: { top: 1.5 * IN, left: 0.75 * IN },
   gap: { x: 0, y: 0 },
   fold: true,
 };

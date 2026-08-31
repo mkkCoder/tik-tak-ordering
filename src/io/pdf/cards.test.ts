@@ -22,6 +22,20 @@ describe('sheet geometry', () => {
     expect(AVERY_5302.page.height).toBeCloseTo(279.4, 3);
   });
 
+  it('puts four cards on an Avery 5302 sheet, in a 2 × 2 grid', () => {
+    // Avery ship 160 cards across 40 sheets. Anything else means the layout is
+    // straddling the perforations and every card comes out ruined.
+    expect(AVERY_5302.columns * AVERY_5302.rows).toBe(4);
+    expect(AVERY_5302.columns).toBe(2);
+  });
+
+  it('centres the Avery grid on the sheet, the way the stock is cut', () => {
+    const usedWidth = AVERY_5302.columns * AVERY_5302.card.width;
+    const usedHeight = AVERY_5302.rows * AVERY_5302.card.height * 2;
+    expect(AVERY_5302.margin.left).toBeCloseTo((AVERY_5302.page.width - usedWidth) / 2, 6);
+    expect(AVERY_5302.margin.top).toBeCloseTo((AVERY_5302.page.height - usedHeight) / 2, 6);
+  });
+
   it('keeps every Avery slot inside the page', () => {
     const slotHeight = AVERY_5302.card.height * 2;
     const usedHeight = AVERY_5302.margin.top + AVERY_5302.rows * slotHeight;
