@@ -9,6 +9,11 @@ export const PRICE = '$19';
 /**
  * The Lemon Squeezy buy link for TIKTAK Pro. `openCheckout` appends `?embed=1`
  * itself, so this is the plain share link exactly as the dashboard gives it.
+ *
+ * NOTE: this is a TEST-MODE link. An unactivated Lemon Squeezy store is locked
+ * in test mode, and test products do not exist in the live store. Once the
+ * store is activated, use Copy to Live Mode on the product and replace this
+ * with the live link — the id changes.
  */
 export const BUY_URL =
   'https://tik-tak.lemonsqueezy.com/checkout/buy/a27bfe9c-e09f-4cc4-9ad0-d44d5410d29b';
