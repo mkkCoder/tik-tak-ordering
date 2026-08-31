@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+﻿import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   extractLicenseKey,
   findLicenseKeyIn,
@@ -169,15 +169,15 @@ describe('extractLicenseKey', () => {
   });
 
   it('pulls the key out of a whole pasted sentence', () => {
-    expect(extractLicenseKey(`Your license key is: ${KEY_UUID} — keep it safe.`)).toBe(KEY_UUID);
+    expect(extractLicenseKey(`Your license key is: ${KEY_UUID} ג€” keep it safe.`)).toBe(KEY_UUID);
   });
 
   it('survives the invisible characters email clients add', () => {
-    expect(extractLicenseKey(`​${KEY_UUID} `)).toBe(KEY_UUID);
+    expect(extractLicenseKey(`\u200B${KEY_UUID}\u00A0`)).toBe(KEY_UUID);
   });
 
   it('strips smart quotes and angle brackets', () => {
-    expect(extractLicenseKey(`“${KEY_UUID}”`)).toBe(KEY_UUID);
+    expect(extractLicenseKey(`ג€${KEY_UUID}ג€`)).toBe(KEY_UUID);
     expect(extractLicenseKey(`<${KEY_UUID}>`)).toBe(KEY_UUID);
   });
 
