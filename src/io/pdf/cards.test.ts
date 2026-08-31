@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { AVERY_5302, A4_FLAT, buildCards, buildCardsPdf, customSheet } from './cards';
+import { AVERY_5302, A4_FLAT, buildCards, buildCardsPdf, customSheet, fitText } from './cards';
 import { demoProject } from '@/model/demo';
 import { emptyProject } from '@/model/types';
 
@@ -123,5 +123,60 @@ describe('generated card sheets', () => {
     });
     expect(result.cards).toBe(0);
     expect(result.pages).toBe(1);
+  });
+});
+
+describe('fitting a name onto a card', () => {
+  // A stand-in for jsPDF's metrics: width is linear in size, which is the
+  // property the exact-scale fallback relies on.
+  const measure = (text: string, size: number) => text.length * size * 0.5;
+
+  it('leaves a short name at full size on one line', () => {
+    expect(fitText(measure, 'Dana Levi', 100, 20, 9)).toEqual({ lines: ['Dana Levi'], size: 20 });
+  });
+
+  it('shrinks rather than wraps when shrinking is enough', () => {
+    const fitted = fitText(measure, 'Jonathan Baker', 100, 20, 9);
+    expect(fitted.lines).toEqual(['Jonathan Baker']);
+    expect(fitted.size).toBeLessThan(20);
+    expect(measure(fitted.lines[0]!, fitted.size)).toBeLessThanOrEqual(100);
+  });
+
+  it('wraps the name that started all this, and fits it', () => {
+    const fitted = fitText(measure, 'Alexandra Rosenbaum-Feldman', 100, 20, 9);
+    expect(fitted.lines).toHaveLength(2);
+    for (const line of fitted.lines) {
+      expect(measure(line, fitted.size)).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it('breaks at the most even space, not the first one', () => {
+    const fitted = fitText(measure, 'Mr and Mrs Jonathan Baker', 60, 20, 9);
+    expect(fitted.lines).toEqual(['Mr and Mrs', 'Jonathan Baker']);
+  });
+
+  it('trims a single unbroken word too long for the card, rather than overflowing', () => {
+    const word = 'Wolfeschlegelsteinhausenbergerdorff';
+    const fitted = fitText(measure, word, 60, 20, 9);
+    expect(fitted.lines[0]).toMatch(/^Wolfe.*…$/);
+    expect(measure(fitted.lines[0]!, fitted.size)).toBeLessThanOrEqual(60);
+  });
+
+  it('fits a two-line name that is still too wide at the floor', () => {
+    const fitted = fitText(measure, 'Bartholomew Fitzwilliam Montgomery-Cavendish', 40, 20, 9);
+    for (const line of fitted.lines) {
+      expect(measure(line, fitted.size)).toBeLessThanOrEqual(40);
+    }
+  });
+
+  it('never wraps when told it may not', () => {
+    const fitted = fitText(measure, 'Groom university friends', 40, 12, 6, 1);
+    expect(fitted.lines).toHaveLength(1);
+    expect(measure(fitted.lines[0]!, fitted.size)).toBeLessThanOrEqual(40);
+  });
+
+  it('never returns an unreadably small size', () => {
+    const fitted = fitText(measure, 'x'.repeat(500), 10, 20, 9);
+    expect(fitted.size).toBeGreaterThanOrEqual(4);
   });
 });

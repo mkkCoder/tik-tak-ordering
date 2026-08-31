@@ -171,6 +171,107 @@ function drawCutLines(doc: jsPDF, slot: Slot, fold: boolean): void {
   doc.setLineDashPattern([], 0);
 }
 
+/** Points to millimetres, for turning a font size into a line spacing. */
+const PT_TO_MM = 25.4 / 72;
+
+/** How much of the card's width the text may occupy. */
+const TEXT_WIDTH_RATIO = 0.86;
+
+/** The smallest a name is allowed to shrink before it wraps instead. */
+const MIN_NAME_SIZE = 9;
+
+export interface FittedText {
+  lines: string[];
+  size: number;
+}
+
+/**
+ * Make a name fit on a card.
+ *
+ * The old code set the font size from the card's *height* and never looked at
+ * its width, so "Alexandra Rosenbaum-Feldman" ran off the edge of an Avery
+ * card and through the cut line. A card with a name printed halfway off it is
+ * not a card anyone puts on a table.
+ *
+ * Three steps, in order of what looks best: shrink until one line fits; failing
+ * that, break at the most even space and shrink both halves; failing even that
+ * — a single unbroken word longer than the card — scale to the exact width. The
+ * last step is what makes this a guarantee rather than a heuristic, since text
+ * width in jsPDF is linear in font size.
+ */
+export function fitText(
+  measure: (text: string, size: number) => number,
+  text: string,
+  maxWidth: number,
+  startSize: number,
+  minSize: number,
+  maxLines: 1 | 2 = 2,
+): FittedText {
+  for (let size = startSize; size >= minSize; size -= 0.5) {
+    if (measure(text, size) <= maxWidth) return { lines: [text], size };
+  }
+
+  const split = maxLines === 2 ? splitInTwo(text) : null;
+  if (split) {
+    for (let size = startSize; size >= minSize; size -= 0.5) {
+      if (split.every((line) => measure(line, size) <= maxWidth)) return { lines: split, size };
+    }
+  }
+
+  // Shrinking has run out. Scale to the exact width instead — and if even the
+  // absolute floor is too wide, which takes a single word longer than the card,
+  // trim it with an ellipsis. A name that visibly did not fit is bad; a name
+  // running off the edge of the card and through the cut line is worse.
+  const lines = split ?? [text];
+  const widest = Math.max(...lines.map((line) => measure(line, minSize)));
+  const size = scaleToFit(minSize, widest, maxWidth);
+  return { lines: lines.map((line) => truncateToFit(measure, line, maxWidth, size)), size };
+}
+
+/** Below this nothing is readable, so there is no sense scaling past it. */
+const ABSOLUTE_MIN_SIZE = 5;
+
+function scaleToFit(size: number, measured: number, maxWidth: number): number {
+  if (measured <= maxWidth || measured <= 0) return size;
+  return Math.max(ABSOLUTE_MIN_SIZE, (size * maxWidth) / measured);
+}
+
+function truncateToFit(
+  measure: (text: string, size: number) => number,
+  text: string,
+  maxWidth: number,
+  size: number,
+): string {
+  if (measure(text, size) <= maxWidth) return text;
+  let fits = 0;
+  let tooMuch = text.length;
+  while (fits < tooMuch) {
+    const mid = Math.ceil((fits + tooMuch) / 2);
+    if (measure(`${text.slice(0, mid)}…`, size) <= maxWidth) fits = mid;
+    else tooMuch = mid - 1;
+  }
+  return fits > 0 ? `${text.slice(0, fits)}…` : '…';
+}
+
+/** Break at whichever space leaves the two halves closest in length. */
+function splitInTwo(text: string): [string, string] | null {
+  const words = text.trim().split(/\s+/);
+  if (words.length < 2) return null;
+
+  let best: [string, string] | null = null;
+  let bestDifference = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const head = words.slice(0, i).join(' ');
+    const tail = words.slice(i).join(' ');
+    const difference = Math.abs(head.length - tail.length);
+    if (difference < bestDifference) {
+      bestDifference = difference;
+      best = [head, tail];
+    }
+  }
+  return best;
+}
+
 /**
  * One face of a card. `flip` draws it rotated 180° about the face's own centre,
  * which is what makes the top half of a tent card readable once folded.
@@ -185,11 +286,29 @@ function drawFace(
 ): void {
   const cx = face.x + face.width / 2;
   const cy = face.y + face.height / 2;
-  const nameSize = Math.min(20, Math.max(11, face.height * 0.32));
-  const metaSize = Math.max(7, nameSize * 0.5);
+  const maxWidth = face.width * TEXT_WIDTH_RATIO;
 
+  // Measuring has to use the same font the text will be drawn in — `serif`
+  // falls back to a different face for scripts Fraunces cannot render, and a
+  // Hebrew name measured in the wrong font is measured wrong.
+  const measure = (text: string, size: number, weight: 'normal' | 'bold' = 'normal') => {
+    serif(text, weight);
+    doc.setFontSize(size);
+    return doc.getTextWidth(text);
+  };
+
+  const startSize = Math.min(20, Math.max(11, face.height * 0.32));
+  const name = fitText(measure, entry.name, maxWidth, startSize, MIN_NAME_SIZE);
+  const nameSize = name.size;
+  const metaSize = Math.max(7, Math.min(20, Math.max(11, face.height * 0.32)) * 0.5);
+
+  // A wrapped name is centred as a block, so the card stays balanced, and the
+  // table line keeps its distance from the *last* line rather than the first.
+  const lineGap = nameSize * PT_TO_MM * 1.12;
   const nameY = cy - (kind === 'place' ? nameSize * 0.05 : nameSize * 0.15);
-  const metaY = nameY + metaSize * 1.9;
+  const firstNameY = nameY - ((name.lines.length - 1) * lineGap) / 2;
+  const lastNameY = firstNameY + (name.lines.length - 1) * lineGap;
+  const metaY = lastNameY + metaSize * 1.9;
 
   const place = (text: string, y: number, size: number, bold: boolean, muted: boolean) => {
     serif(text, bold ? 'bold' : 'normal');
@@ -209,12 +328,19 @@ function drawFace(
     doc.text(text, cx + width / 2, 2 * cy - y, { angle: 180 });
   };
 
-  place(entry.name, nameY, nameSize, false, false);
-  if (kind === 'escort') {
-    place(entry.table, metaY, metaSize, true, false);
-  } else {
-    place(entry.table, metaY, metaSize, false, true);
-  }
+  name.lines.forEach((line, i) => place(line, firstNameY + i * lineGap, nameSize, false, false));
+  // The table line gets the same treatment but never wraps: a table called
+  // "Groom's university friends" broken over two lines reads as a second guest.
+  const bold = kind === 'escort';
+  const meta = fitText(
+    (text, size) => measure(text, size, bold ? 'bold' : 'normal'),
+    entry.table,
+    maxWidth,
+    metaSize,
+    6,
+    1,
+  );
+  place(meta.lines[0] ?? entry.table, metaY, meta.size, bold, !bold);
 }
 
 export interface CardOptions {
