@@ -235,13 +235,15 @@ export function LicenseDialog({
           more than that for four cards.
         </p>
 
-        {/* Deliberately quiet. Most people never need it: the overlay activates
-            Pro on this page, and the link in the receipt email activates it on
-            any other. This is for a second computer, months later. */}
+        {/* Secondary, but not hidden. Most people never need it — the overlay
+            activates Pro on this page and the receipt email's link activates it
+            on any other — yet the person who does need it is someone who has
+            already paid, and making them squint is the wrong way to treat a
+            customer. Body size, understated colour. */}
         <button
           type="button"
           onClick={() => setStage('code')}
-          className="self-start text-micro text-slate underline underline-offset-2 hover:text-ink"
+          className="self-start text-[13px] text-slate underline underline-offset-2 hover:text-ink"
         >
           Already bought it? Enter your code
         </button>
