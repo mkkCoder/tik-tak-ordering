@@ -2,18 +2,13 @@ import { useEffect, useState } from 'react';
 import { Button, Dialog, Field } from '@/ui/primitives';
 import { useUiStore } from '@/store/ui';
 import { useLicenseStore } from './useLicense';
-import { openCheckout } from './checkout';
+import { openCheckout, type CheckoutOutcome } from './checkout';
 
 export const PRICE = '$19';
 
 /**
  * The Lemon Squeezy buy link for TIKTAK Pro. `openCheckout` appends `?embed=1`
  * itself, so this is the plain share link exactly as the dashboard gives it.
- *
- * NOTE: this is a TEST-MODE link. An unactivated Lemon Squeezy store is locked
- * in test mode, and test products do not exist in the live store. Once the
- * store is activated, use Copy to Live Mode on the product and replace this
- * with the live link — the id changes.
  */
 export const BUY_URL =
   'https://tik-tak.lemonsqueezy.com/checkout/buy/a27bfe9c-e09f-4cc4-9ad0-d44d5410d29b';
@@ -30,14 +25,30 @@ type Stage = 'offer' | 'code';
 /**
  * The upgrade dialog.
  *
- * Two things this is careful about. It sells the print pack rather than the
- * removal of a watermark — nobody is delighted to pay for something to stop
- * being ugly, but printing 150 name cards by hand is a real evening of work.
- * And it never makes a code the first thing you see: buying happens in an
- * overlay on this page, and the code field is the fallback for people who
- * already paid, not the front door.
+ * Three things this is careful about.
+ *
+ * It sells the print pack rather than the removal of a watermark — nobody is
+ * delighted to pay for something to stop being ugly, but printing 150 name
+ * cards by hand is a real evening of work.
+ *
+ * There is one button. A licence code is not a thing a person should have to
+ * handle: the overlay hands the key back on this page, and the receipt email's
+ * button carries it in the URL, so the ordinary path never shows a code at all.
+ * The code field survives as a quiet link, for a second computer.
+ *
+ * And unlocking is not the end of anything. Whoever gets here was in the middle
+ * of exporting something; `onUnlocked` puts them back in front of it.
  */
-export function LicenseDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function LicenseDialog({
+  open,
+  onClose,
+  onUnlocked,
+}: {
+  open: boolean;
+  onClose: () => void;
+  /** Called instead of `onClose` when Pro has just been activated. */
+  onUnlocked?: () => void;
+}) {
   const [stage, setStage] = useState<Stage>('offer');
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
@@ -60,30 +71,40 @@ export function LicenseDialog({ open, onClose }: { open: boolean; onClose: () =>
     onClose();
   }
 
+  /** Pro is on. Hand them back to whatever they were trying to export. */
+  function unlocked() {
+    setCode('');
+    (onUnlocked ?? onClose)();
+  }
+
   async function submit() {
     const ok = await activate(code);
-    if (ok) {
-      setCode('');
-      onClose();
+    if (ok) unlocked();
+  }
+
+  async function onPaid(outcome: CheckoutOutcome) {
+    if (outcome.kind === 'activated') {
+      // The overlay handed back the key: finish the job for them.
+      const ok = await activate(outcome.key);
+      if (ok) {
+        notify('Thank you — Pro is active. Everything prints clean now.');
+        unlocked();
+        return;
+      }
     }
+    // Paid, but no usable key in hand. The code is in their email, so put the
+    // field in front of them rather than leaving them to hunt for it.
+    setStage('code');
   }
 
   async function buy() {
     setBusy(true);
     try {
-      const outcome = await openCheckout(BUY_URL);
-      if (outcome.kind === 'activated') {
-        // The overlay handed back the key: finish the job for them.
-        const ok = await activate(outcome.key);
-        if (ok) {
-          notify('Thank you — Pro is active. Everything prints clean now.');
-          onClose();
-          return;
-        }
-      }
-      // Paid but no key in hand, or the checkout opened in a new tab: the code
-      // is in their email either way, so put the field in front of them.
-      setStage('code');
+      // Note the two-stage shape: this await ends when the overlay is on screen.
+      // Whether they buy, close it, or wander off is not this button's business
+      // — anything else leaves it stuck on "Opening…" when they press Escape.
+      const opened = await openCheckout(BUY_URL, (outcome) => void onPaid(outcome));
+      if (opened === 'new-tab') setStage('code');
     } finally {
       setBusy(false);
     }
@@ -108,8 +129,8 @@ export function LicenseDialog({ open, onClose }: { open: boolean; onClose: () =>
       >
         <div className="flex flex-col gap-2">
           <p>
-            Pro is active in this browser{license?.label ? ` — ${license.label}` : ''}. Charts
-            print clean, the guest index is complete, and place cards are unlocked.
+            Pro is active in this browser{license?.label ? ` — ${license.label}` : ''}. Charts print
+            clean, the guest index is complete, and place cards are unlocked.
           </p>
           <p className="text-slate">
             Using a different computer? Open this dialog there and enter the same code from your
@@ -137,8 +158,8 @@ export function LicenseDialog({ open, onClose }: { open: boolean; onClose: () =>
       >
         <div className="flex flex-col gap-3">
           <p className="text-slate">
-            Your code is in the email from your purchase. You can paste the whole line — TIKTAK
-            will find the code in it.
+            Your code is in the email from your purchase. You can paste the whole line — TIKTAK will
+            find the code in it.
           </p>
           <Field
             data-autofocus
@@ -174,18 +195,15 @@ export function LicenseDialog({ open, onClose }: { open: boolean; onClose: () =>
       onClose={close}
       width={460}
       footer={
-        <>
-          <Button onClick={() => setStage('code')}>I already paid</Button>
-          <Button variant="primary" data-autofocus disabled={busy} onClick={buy}>
-            {busy ? 'Opening…' : `Unlock for ${PRICE}`}
-          </Button>
-        </>
+        <Button variant="primary" data-autofocus disabled={busy} onClick={buy}>
+          {busy ? 'Opening…' : `Unlock for ${PRICE}`}
+        </Button>
       }
     >
       <div className="flex flex-col gap-3">
         <p className="text-slate">
-          Planning stays free, forever — guests, tables, rules, auto-arrange and CSV export. This
-          is the part you print and hand out.
+          Planning stays free, forever — guests, tables, rules, auto-arrange and CSV export. This is
+          the part you print and hand out.
         </p>
 
         <ul className="flex flex-col gap-1.5">
@@ -213,9 +231,20 @@ export function LicenseDialog({ open, onClose }: { open: boolean; onClose: () =>
         </ul>
 
         <p className="rounded-[3px] border border-[color:var(--hairline)] bg-linen px-2.5 py-2 text-[13px]">
-          {PRICE} once. Not a subscription, no account, yours for good — and a calligrapher
-          charges more than that for four cards.
+          {PRICE} once. Not a subscription, no account, yours for good — and a calligrapher charges
+          more than that for four cards.
         </p>
+
+        {/* Deliberately quiet. Most people never need it: the overlay activates
+            Pro on this page, and the link in the receipt email activates it on
+            any other. This is for a second computer, months later. */}
+        <button
+          type="button"
+          onClick={() => setStage('code')}
+          className="self-start text-micro text-slate underline underline-offset-2 hover:text-ink"
+        >
+          Already bought it? Enter your code
+        </button>
       </div>
     </Dialog>
   );

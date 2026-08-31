@@ -142,7 +142,15 @@ export function Dialog({
     if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    panel?.querySelector<HTMLElement>('[data-autofocus], input, button')?.focus();
+    // Two queries, not one selector list: `querySelector('a, b')` returns
+    // whichever matches first in document order, so a single list would hand
+    // focus to the close button in the corner and quietly ignore every
+    // `data-autofocus` in the app. Ask for the marked element first, and only
+    // fall back to "whatever is focusable" when a dialog hasn't marked one.
+    const target =
+      panel?.querySelector<HTMLElement>('[data-autofocus]') ??
+      panel?.querySelector<HTMLElement>('input, button');
+    target?.focus();
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {

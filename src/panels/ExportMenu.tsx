@@ -12,11 +12,15 @@ import { AVERY_5302, A4_FLAT, type CardKind } from '@/io/pdf/cards';
 import { Button, Dialog, Field, Select, cx } from '@/ui/primitives';
 import { track } from '@/analytics';
 
+/** Which export dialog sent someone to the paywall, so we can send them back. */
+type Origin = 'pdf' | 'cards';
+
 export function ExportMenu() {
   const [open, setOpen] = useState(false);
   const [pdfOpen, setPdfOpen] = useState(false);
   const [licenseOpen, setLicenseOpen] = useState(false);
   const [cardsOpen, setCardsOpen] = useState(false);
+  const [cameFrom, setCameFrom] = useState<Origin | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,6 +34,32 @@ export function ExportMenu() {
 
   function baseName(): string {
     return projectFileName(useProjectStore.getState().event.name).replace('.tiktak.json', '');
+  }
+
+  /**
+   * Buying is an interruption, not a destination. Remember which export the
+   * person had open, and when Pro comes on, put that dialog back in front of
+   * them with their settings still in it and the export button under the
+   * cursor. Nobody should have to find their way back through the menu to the
+   * thing they just paid to be able to do.
+   */
+  function upgradeFrom(origin: Origin) {
+    if (origin === 'pdf') setPdfOpen(false);
+    else setCardsOpen(false);
+    setCameFrom(origin);
+    setLicenseOpen(true);
+  }
+
+  function closeLicense() {
+    setLicenseOpen(false);
+    setCameFrom(null);
+  }
+
+  function resumeAfterUnlock() {
+    setLicenseOpen(false);
+    if (cameFrom === 'pdf') setPdfOpen(true);
+    else if (cameFrom === 'cards') setCardsOpen(true);
+    setCameFrom(null);
   }
 
   return (
@@ -73,7 +103,11 @@ export function ExportMenu() {
           <Item
             onClick={() => {
               setOpen(false);
-              downloadText(guestsCsv(toProject(useProjectStore.getState())), `${baseName()}-guests.csv`, 'text/csv');
+              downloadText(
+                guestsCsv(toProject(useProjectStore.getState())),
+                `${baseName()}-guests.csv`,
+                'text/csv',
+              );
             }}
           >
             Guests (CSV)
@@ -81,7 +115,11 @@ export function ExportMenu() {
           <Item
             onClick={() => {
               setOpen(false);
-              downloadText(tablesCsv(toProject(useProjectStore.getState())), `${baseName()}-tables.csv`, 'text/csv');
+              downloadText(
+                tablesCsv(toProject(useProjectStore.getState())),
+                `${baseName()}-tables.csv`,
+                'text/csv',
+              );
             }}
           >
             Tables (CSV)
@@ -92,20 +130,14 @@ export function ExportMenu() {
       <PdfDialog
         open={pdfOpen}
         onClose={() => setPdfOpen(false)}
-        onUpgrade={() => {
-          setPdfOpen(false);
-          setLicenseOpen(true);
-        }}
+        onUpgrade={() => upgradeFrom('pdf')}
       />
       <CardsDialog
         open={cardsOpen}
         onClose={() => setCardsOpen(false)}
-        onUpgrade={() => {
-          setCardsOpen(false);
-          setLicenseOpen(true);
-        }}
+        onUpgrade={() => upgradeFrom('cards')}
       />
-      <LicenseDialog open={licenseOpen} onClose={() => setLicenseOpen(false)} />
+      <LicenseDialog open={licenseOpen} onClose={closeLicense} onUnlocked={resumeAfterUnlock} />
     </div>
   );
 }
@@ -146,11 +178,12 @@ function PdfDialog({
       // in the app, and most sessions never export.
       const { buildSeatingPdf, freeOptions, proOptions } = await import('@/io/pdf');
       const project = toProject(useProjectStore.getState());
-      const options = pro
-        ? proOptions(format, orientation)
-        : freeOptions(format, orientation);
+      const options = pro ? proOptions(format, orientation) : freeOptions(format, orientation);
       const result = await buildSeatingPdf(project, options);
-      downloadBlob(result.blob, `${projectFileName(project.event.name).replace('.tiktak.json', '')}.pdf`);
+      downloadBlob(
+        result.blob,
+        `${projectFileName(project.event.name).replace('.tiktak.json', '')}.pdf`,
+      );
       notify(`Exported ${result.pages} pages.`);
       onClose();
     } catch (err) {
@@ -171,7 +204,9 @@ function PdfDialog({
       footer={
         <>
           <Button onClick={onClose}>Cancel</Button>
-          <Button variant="primary" disabled={busy} onClick={run}>
+          {/* Focused on open so that someone returning from the paywall has the
+              export button already under their finger. */}
+          <Button variant="primary" data-autofocus disabled={busy} onClick={run}>
             {busy ? 'Building…' : 'Export PDF'}
           </Button>
         </>
@@ -179,11 +214,15 @@ function PdfDialog({
     >
       <div className="flex flex-col gap-3">
         <p className="text-slate">
-          Three parts in one document: the floor plan, a list for every table, and an
-          alphabetical index to hang at the entrance.
+          Three parts in one document: the floor plan, a list for every table, and an alphabetical
+          index to hang at the entrance.
         </p>
         <div className="grid grid-cols-2 gap-2">
-          <Select label="Paper" value={format} onChange={(e) => setFormat(e.target.value as PageFormat)}>
+          <Select
+            label="Paper"
+            value={format}
+            onChange={(e) => setFormat(e.target.value as PageFormat)}
+          >
             <option value="a4">A4</option>
             <option value="letter">Letter</option>
           </Select>
@@ -289,7 +328,7 @@ function CardsDialog({
         <>
           <Button onClick={onClose}>Cancel</Button>
           {pro ? (
-            <Button variant="primary" disabled={busy || seated === 0} onClick={run}>
+            <Button variant="primary" data-autofocus disabled={busy || seated === 0} onClick={run}>
               {busy ? 'Building…' : 'Export cards'}
             </Button>
           ) : (
@@ -365,13 +404,15 @@ function CardsDialog({
         )}
 
         {seated === 0 && (
-          <p className="text-[13px] text-slate">Nobody is seated yet, so there are no cards to print.</p>
+          <p className="text-[13px] text-slate">
+            Nobody is seated yet, so there are no cards to print.
+          </p>
         )}
 
         {!pro && (
           <p className="rounded-[3px] border border-[color:var(--hairline)] bg-linen px-2.5 py-2 text-[13px]">
-            Cards are part of Pro, {PRICE} once. That is an evening of fighting with Word tables,
-            or a calligrapher&apos;s fee for four cards.
+            Cards are part of Pro, {PRICE} once. That is an evening of fighting with Word tables, or
+            a calligrapher&apos;s fee for four cards.
           </p>
         )}
       </div>

@@ -14,6 +14,14 @@ import { findLicenseKeyIn } from './gate';
  * When that payload contains the licence key we activate it for them and they
  * never see a key at all.
  *
+ * WHY THIS RESOLVES AS SOON AS THE OVERLAY IS UP. The obvious shape — await the
+ * whole checkout — is wrong, because a person who presses Escape, or clicks the
+ * backdrop, or changes their mind, ends that session without any event we can
+ * count on. An awaited promise then never settles and the button that started it
+ * says "Opening…" forever. So opening and paying are two different things here:
+ * the promise reports that the overlay is up, and payment arrives later on
+ * `onPaid`, whenever it arrives, or never.
+ *
  * A NOTE ON THE NO-CDN RULE. Everything else in TIKTAK is bundled from npm at
  * build time. This script is the one exception, and it is a considered one:
  * there is no npm build of the overlay, it is fetched only when someone
@@ -76,50 +84,62 @@ function loadLemonJs(): Promise<LemonSqueezyApi | null> {
   return loading;
 }
 
+/** What happened at the till, reported whenever it happens — possibly never. */
 export type CheckoutOutcome =
   /** The overlay reported a completed order and handed us the key. */
   | { kind: 'activated'; key: string }
   /** Paid, but the payload carried no key — they finish from the email. */
-  | { kind: 'paid-no-key' }
-  /** The overlay could not be used; the hosted checkout opened in a new tab. */
-  | { kind: 'new-tab' };
+  | { kind: 'paid-no-key' };
+
+/** Where the checkout ended up. Known immediately, unlike the outcome. */
+export type CheckoutOpened =
+  /** On this page, over the plan. */
+  | 'overlay'
+  /** The script was unreachable, so the hosted page opened in a new tab. */
+  | 'new-tab';
+
+interface CheckoutDeps {
+  load?: () => Promise<LemonSqueezyApi | null>;
+  openTab?: (url: string) => void;
+}
 
 /**
- * Open the checkout. Resolves as soon as the outcome is known; a customer who
- * closes the overlay without buying simply never resolves anything, which is
- * correct — there is nothing to report.
+ * Open the checkout. Resolves once it is open — not once it is paid. Payment,
+ * if it comes, arrives on `onPaid`, which fires at most once per call.
  */
-export async function openCheckout(buyUrl: string): Promise<CheckoutOutcome> {
-  const api = await loadLemonJs();
+export async function openCheckout(
+  buyUrl: string,
+  onPaid: (outcome: CheckoutOutcome) => void,
+  deps: CheckoutDeps = {},
+): Promise<CheckoutOpened> {
+  const load = deps.load ?? loadLemonJs;
+  const openTab =
+    deps.openTab ?? ((url: string) => void window.open(url, '_blank', 'noopener,noreferrer'));
+
+  const api = await load();
 
   if (!api) {
-    window.open(buyUrl, '_blank', 'noopener,noreferrer');
-    return { kind: 'new-tab' };
+    openTab(buyUrl);
+    return 'new-tab';
   }
 
-  return new Promise<CheckoutOutcome>((resolve) => {
-    let settled = false;
-    const finish = (outcome: CheckoutOutcome) => {
-      if (settled) return;
-      settled = true;
-      resolve(outcome);
-    };
-
-    try {
-      api.Setup({
-        eventHandler: (event) => {
-          if (event?.event !== 'Checkout.Success') return;
-          const key = findLicenseKeyIn(event.data);
-          finish(key ? { kind: 'activated', key } : { kind: 'paid-no-key' });
-        },
-      });
-      // `embed=1` is what makes the hosted page render inside the overlay.
-      api.Url.Open(withEmbed(buyUrl));
-    } catch {
-      window.open(buyUrl, '_blank', 'noopener,noreferrer');
-      finish({ kind: 'new-tab' });
-    }
-  });
+  try {
+    let paid = false;
+    api.Setup({
+      eventHandler: (event) => {
+        if (event?.event !== 'Checkout.Success' || paid) return;
+        paid = true;
+        const key = findLicenseKeyIn(event.data);
+        onPaid(key ? { kind: 'activated', key } : { kind: 'paid-no-key' });
+      },
+    });
+    // `embed=1` is what makes the hosted page render inside the overlay.
+    api.Url.Open(withEmbed(buyUrl));
+    return 'overlay';
+  } catch {
+    openTab(buyUrl);
+    return 'new-tab';
+  }
 }
 
 function withEmbed(url: string): string {
