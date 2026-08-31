@@ -6,8 +6,12 @@ import { openCheckout } from './checkout';
 
 export const PRICE = '$19';
 
-/** Replace with the real Lemon Squeezy buy link once the product is published. */
-export const BUY_URL = 'https://tik-tak.lemonsqueezy.com/buy/REPLACE-WITH-PRODUCT-ID';
+/**
+ * The Lemon Squeezy buy link for TIKTAK Pro. `openCheckout` appends `?embed=1`
+ * itself, so this is the plain share link exactly as the dashboard gives it.
+ */
+export const BUY_URL =
+  'https://tik-tak.lemonsqueezy.com/checkout/buy/a27bfe9c-e09f-4cc4-9ad0-d44d5410d29b';
 
 /** What the money actually buys, in the order a person cares about it. */
 export const PRO_INCLUDES = [
