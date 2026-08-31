@@ -10,6 +10,7 @@ import {
 } from '@/io/projectFile';
 import { downloadText, pickTextFile } from '@/io/download';
 import { Button, Dialog, cx } from '@/ui/primitives';
+import { recordNewEvent } from '@/app/eventsPlanned';
 
 /**
  * Project-level file actions. Deliberately plain: opening a damaged file must
@@ -69,7 +70,12 @@ export function FileMenu() {
 
   return (
     <div className="relative" ref={ref}>
-      <Button size="sm" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-haspopup="menu">
+      <Button
+        size="sm"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+      >
         Project
         <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true">
           <path
@@ -115,6 +121,7 @@ export function FileMenu() {
               onClick={() => {
                 withHistoryGroup(() => useProjectStore.getState().newProject());
                 clearHistory();
+                recordNewEvent();
                 setConfirmNew(false);
               }}
             >

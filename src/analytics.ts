@@ -11,7 +11,9 @@ export type AnalyticsEvent =
   | 'planner_opened'
   | 'guests_imported'
   | 'export_attempted'
-  | 'license_activated';
+  | 'license_activated'
+  /** Somebody has started a third event — they plan events for a living. */
+  | 'repeat_planner';
 
 interface GoatCounter {
   count: (vars: { path: string; title?: string; event: boolean }) => void;
