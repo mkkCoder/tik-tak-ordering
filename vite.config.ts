@@ -22,6 +22,12 @@ export default defineConfig(({ mode }) => {
           // Landing page at /, app at /app/
           main: resolve(__dirname, 'index.html'),
           app: resolve(__dirname, 'app/index.html'),
+          // Guides are plain static pages: no bundle, just something for
+          // search engines to find and for a person to actually read.
+          avery5302: resolve(
+            __dirname,
+            'guides/avery-5302-place-card-template/index.html',
+          ),
         },
       },
     },

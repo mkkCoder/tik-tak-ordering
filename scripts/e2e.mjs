@@ -271,7 +271,9 @@ function blankProject(tableCount = 0, seatedGuests = 0) {
   check('upgrade dialog states it is not a subscription', /not a subscription/i.test(offerText));
 
   // Someone who already bought reaches the code field from the offer screen.
-  await page.getByRole('button', { name: 'I already paid' }).click();
+  // It is a quiet link rather than a second button on purpose — the ordinary
+  // path never shows a code at all — but it still has to be reachable.
+  await page.getByRole('button', { name: /Already bought it/ }).click();
   await page.getByLabel('Code from your email').fill('TIKTAK-TEST-KEY-0001');
   await page.getByRole('button', { name: 'Unlock' }).click();
   await page.waitForTimeout(400);
@@ -279,9 +281,10 @@ function blankProject(tableCount = 0, seatedGuests = 0) {
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tiktak:license') ?? 'null'));
   check('activation stores a valid licence', stored?.valid === true, stored?.label ?? '');
 
-  await page.getByRole('button', { name: 'Export' }).click();
-  await page.getByRole('menuitem', { name: /Seating chart/ }).click();
+  // Unlocking hands you back to the export you were in the middle of, so the
+  // dialog is already open. Walking the menu again would be the old behaviour.
   const afterText = await page.locator('[role="dialog"]').innerText();
+  check('unlocking returns to the export in progress', /Export the seating chart/i.test(afterText));
   check('Pro export drops the watermark notice', /Pro is active/.test(afterText));
 
   // A pasted line, not a bare key — what people actually do.
