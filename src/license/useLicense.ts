@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import {
+  extractLicenseKey,
   isPro,
   readStoredLicense,
   revalidateIfDue,
@@ -28,7 +29,8 @@ export const useLicenseStore = create<LicenseState>()((set, get) => ({
 
   activate: async (key) => {
     set({ checking: true, error: null });
-    const result = await validateKey(key, get().license);
+    // People paste the line around the code, not the code. Find it for them.
+    const result = await validateKey(extractLicenseKey(key), get().license);
     if (!result.ok) {
       set({ checking: false, error: result.message });
       return false;
@@ -57,4 +59,18 @@ export const useLicenseStore = create<LicenseState>()((set, get) => ({
 /** Kick off a background revalidation once per session. */
 export function startLicenseRefresh(): void {
   void useLicenseStore.getState().refresh();
+}
+
+/**
+ * Activate straight from the URL, for a post-purchase redirect that carries the
+ * key. Silent on failure: a stale or mistyped link should do nothing visible
+ * rather than greet someone with an error they cannot act on.
+ */
+export async function activateFromUrl(): Promise<boolean> {
+  const { licenseKeyFromUrl, stripKeyFromUrl } = await import('./checkout');
+  const key = licenseKeyFromUrl();
+  if (!key) return false;
+  stripKeyFromUrl();
+  if (useLicenseStore.getState().pro) return false;
+  return useLicenseStore.getState().activate(key);
 }

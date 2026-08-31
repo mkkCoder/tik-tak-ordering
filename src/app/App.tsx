@@ -11,12 +11,14 @@ import { Notices } from './Notices';
 import { FirstRun } from './FirstRun';
 import { BottomSheet } from './BottomSheet';
 import { usePersistence } from './usePersistence';
+import { useLicenseOnBoot } from './useLicenseOnBoot';
 import { useViewport } from './useViewport';
 import { IconButton } from '@/ui/primitives';
 
 export function App() {
   const boot = usePersistence();
   const viewport = useViewport();
+  useLicenseOnBoot();
   useUndoShortcuts();
 
   return (

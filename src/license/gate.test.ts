@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  extractLicenseKey,
+  findLicenseKeyIn,
   GUMROAD_CONFIG,
   LICENSE_KEY_STORAGE,
   REVALIDATE_AFTER_MS,
@@ -156,5 +158,69 @@ describe('storage', () => {
     expect(isPro(readStoredLicense())).toBe(true);
     localStorage.clear();
     expect(isPro(readStoredLicense())).toBe(false);
+  });
+});
+
+describe('extractLicenseKey', () => {
+  const KEY_UUID = '3b1f2c8a-9d4e-4a71-b6c2-77e0f1a9d3b4';
+
+  it('returns a bare key untouched', () => {
+    expect(extractLicenseKey(KEY_UUID)).toBe(KEY_UUID);
+  });
+
+  it('pulls the key out of a whole pasted sentence', () => {
+    expect(extractLicenseKey(`Your license key is: ${KEY_UUID} — keep it safe.`)).toBe(KEY_UUID);
+  });
+
+  it('survives the invisible characters email clients add', () => {
+    expect(extractLicenseKey(`​${KEY_UUID} `)).toBe(KEY_UUID);
+  });
+
+  it('strips smart quotes and angle brackets', () => {
+    expect(extractLicenseKey(`“${KEY_UUID}”`)).toBe(KEY_UUID);
+    expect(extractLicenseKey(`<${KEY_UUID}>`)).toBe(KEY_UUID);
+  });
+
+  it('handles a multi-line paste', () => {
+    expect(extractLicenseKey(`License key\n\n  ${KEY_UUID}  \n\nOrder #1234`)).toBe(KEY_UUID);
+  });
+
+  it('falls back to a dash-grouped token when it is not a UUID', () => {
+    expect(extractLicenseKey('code: ABCD-EFGH-IJKL-MNOP thanks')).toBe('ABCD-EFGH-IJKL-MNOP');
+  });
+
+  it('hands back the trimmed input when nothing matches, so the server decides', () => {
+    expect(extractLicenseKey('   nonsense   ')).toBe('nonsense');
+  });
+});
+
+describe('findLicenseKeyIn', () => {
+  const KEY_UUID = '3b1f2c8a-9d4e-4a71-b6c2-77e0f1a9d3b4';
+
+  it('finds a key nested in an order payload', () => {
+    const payload = {
+      order: { data: { attributes: { license_key: KEY_UUID, total: 1900 } } },
+    };
+    expect(findLicenseKeyIn(payload)).toBe(KEY_UUID);
+  });
+
+  it('matches a plain `key` field too', () => {
+    expect(findLicenseKeyIn({ meta: { key: KEY_UUID } })).toBe(KEY_UUID);
+  });
+
+  it('ignores UUIDs that are not licence keys', () => {
+    expect(findLicenseKeyIn({ order: { identifier: KEY_UUID, customer_id: 7 } })).toBeNull();
+  });
+
+  it('returns null for a payload with no key at all', () => {
+    expect(findLicenseKeyIn({ order: { total: 1900 } })).toBeNull();
+    expect(findLicenseKeyIn(null)).toBeNull();
+    expect(findLicenseKeyIn('nope')).toBeNull();
+  });
+
+  it('does not recurse forever on a deep structure', () => {
+    let deep: Record<string, unknown> = { license_key: KEY_UUID };
+    for (let i = 0; i < 20; i++) deep = { nested: deep };
+    expect(findLicenseKeyIn(deep)).toBeNull();
   });
 });

@@ -237,3 +237,53 @@ export async function revalidateIfDue(
   }
   return license;
 }
+
+// ---------------------------------------------------------------------------
+// Reading a key out of whatever the customer pasted
+// ---------------------------------------------------------------------------
+
+/** Lemon Squeezy and Gumroad both issue UUID-shaped keys. */
+const UUID_LIKE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+/** A looser fallback: three or more dash-separated alphanumeric groups. */
+const TOKEN_LIKE = /[A-Z0-9]{4,}(?:-[A-Z0-9]{4,}){2,}/i;
+
+/**
+ * Pull the key out of a paste.
+ *
+ * Nobody selects exactly the key. They select the line around it, or the whole
+ * paragraph from the email, and email clients add zero-width characters and
+ * non-breaking spaces on the way. Refusing that paste with "invalid key" is the
+ * worst possible moment to be pedantic — they have already paid.
+ */
+export function extractLicenseKey(pasted: string): string {
+  const cleaned = pasted
+    .replace(/[\u200B-\u200D\uFEFF\u00A0]/g, ' ')
+    .replace(/[\u201C\u201D"'`<>]/g, ' ')
+    .trim();
+
+  return cleaned.match(UUID_LIKE)?.[0] ?? cleaned.match(TOKEN_LIKE)?.[0] ?? cleaned;
+}
+
+/**
+ * Find a licence key anywhere in an arbitrary object.
+ *
+ * The checkout overlay hands back an order payload whose exact shape is the
+ * vendor's business and changes without notice. Rather than hard-coding a path
+ * that will silently stop matching, walk the object for a UUID-shaped string
+ * under a plausibly-named field. Returns null when there is nothing to find, at
+ * which point the customer types the key from their email instead.
+ */
+export function findLicenseKeyIn(payload: unknown, depth = 0): string | null {
+  if (depth > 6 || payload === null || typeof payload !== 'object') return null;
+
+  for (const [rawKey, value] of Object.entries(payload as Record<string, unknown>)) {
+    const name = rawKey.toLowerCase();
+    if (typeof value === 'string' && /licen[sc]e|^key$/.test(name) && UUID_LIKE.test(value)) {
+      return value.match(UUID_LIKE)?.[0] ?? null;
+    }
+    const nested = findLicenseKeyIn(value, depth + 1);
+    if (nested) return nested;
+  }
+  return null;
+}

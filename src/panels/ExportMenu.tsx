@@ -56,18 +56,18 @@ export function ExportMenu() {
           <Item
             onClick={() => {
               setOpen(false);
-              setPdfOpen(true);
-            }}
-          >
-            Seating chart (PDF)…
-          </Item>
-          <Item
-            onClick={() => {
-              setOpen(false);
               setCardsOpen(true);
             }}
           >
             Place &amp; escort cards…
+          </Item>
+          <Item
+            onClick={() => {
+              setOpen(false);
+              setPdfOpen(true);
+            }}
+          >
+            Seating chart (PDF)…
           </Item>
           <div className="my-1 h-px bg-[color:var(--hairline)]" />
           <Item
@@ -208,11 +208,12 @@ function PdfDialog({
           ) : (
             <>
               <p className="mb-1.5">
-                The free export carries a small watermark and the first 20 index entries. The
-                plan and the per-table lists are complete either way.
+                The floor plan and every per-table list are complete and free. Pro adds the full
+                A&ndash;Z index for the entrance, printable place cards, and a chart with no
+                watermark.
               </p>
               <Button size="sm" onClick={onUpgrade}>
-                Remove watermark — {PRICE} once
+                See what&apos;s in Pro — {PRICE} once
               </Button>
             </>
           )}
@@ -369,7 +370,8 @@ function CardsDialog({
 
         {!pro && (
           <p className="rounded-[3px] border border-[color:var(--hairline)] bg-linen px-2.5 py-2 text-[13px]">
-            Cards are part of Pro — {PRICE} once, the same licence that removes the watermark.
+            Cards are part of Pro, {PRICE} once. That is an evening of fighting with Word tables,
+            or a calligrapher&apos;s fee for four cards.
           </p>
         )}
       </div>

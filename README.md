@@ -32,6 +32,16 @@ the bundle budget and publishes `dist/` on every push to `main`.
 
 First-time setup:
 
+0. **Push to `main`.** The workflow only triggers on `main`, so if the clone is
+   on `master`, rename it first:
+
+   ```bash
+   git branch -M main
+   git push -u origin main
+   ```
+
+   If the push is rejected because the repository was created with a README,
+   rebase onto it once: `git pull --rebase origin main`, then push again.
 1. **Repository settings → Pages → Source → GitHub Actions.**
 2. **DNS at the registrar.** For an apex domain, four A records:
 

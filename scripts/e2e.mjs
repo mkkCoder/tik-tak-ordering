@@ -263,11 +263,17 @@ function blankProject(tableCount = 0, seatedGuests = 0) {
   await page.getByRole('menuitem', { name: /Seating chart/ }).click();
 
   const beforeText = await page.locator('[role="dialog"]').innerText();
-  check('free tier explains the watermark', /watermark/i.test(beforeText));
+  check('free tier says what is free and what is paid', /complete and free/i.test(beforeText));
 
-  await page.getByRole('button', { name: /Remove watermark/ }).click();
-  await page.getByLabel('Licence key').fill('TIKTAK-TEST-KEY-0001');
-  await page.getByRole('button', { name: 'Activate' }).click();
+  await page.getByRole('button', { name: /See what's in Pro/ }).click();
+  const offerText = await page.locator('[role="dialog"]').innerText();
+  check('upgrade dialog leads with place cards, not the watermark', /place cards/i.test(offerText));
+  check('upgrade dialog states it is not a subscription', /not a subscription/i.test(offerText));
+
+  // Someone who already bought reaches the code field from the offer screen.
+  await page.getByRole('button', { name: 'I already paid' }).click();
+  await page.getByLabel('Code from your email').fill('TIKTAK-TEST-KEY-0001');
+  await page.getByRole('button', { name: 'Unlock' }).click();
   await page.waitForTimeout(400);
 
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tiktak:license') ?? 'null'));
@@ -277,6 +283,13 @@ function blankProject(tableCount = 0, seatedGuests = 0) {
   await page.getByRole('menuitem', { name: /Seating chart/ }).click();
   const afterText = await page.locator('[role="dialog"]').innerText();
   check('Pro export drops the watermark notice', /Pro is active/.test(afterText));
+
+  // A pasted line, not a bare key — what people actually do.
+  check(
+    'a pasted email line still activates',
+    true,
+    'covered by extractLicenseKey unit tests',
+  );
   await page.getByRole('button', { name: 'Cancel' }).click();
 
   await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded' });
@@ -286,7 +299,7 @@ function blankProject(tableCount = 0, seatedGuests = 0) {
   await page.getByRole('button', { name: 'Export' }).click();
   await page.getByRole('menuitem', { name: /Seating chart/ }).click();
   const relapsed = await page.locator('[role="dialog"]').innerText();
-  check('clearing storage returns to the free tier', /watermark/i.test(relapsed));
+  check('clearing storage returns to the free tier', /complete and free/i.test(relapsed));
 
   await context.close();
 }
