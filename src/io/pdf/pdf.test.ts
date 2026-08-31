@@ -8,6 +8,8 @@ import {
   freeOptions,
   proOptions,
   surnameOf,
+  watermarkFontSize,
+  WATERMARK_NOMINAL_PT,
 } from './index';
 import { demoProject } from '@/model/demo';
 import { emptyProject } from '@/model/types';
@@ -124,5 +126,36 @@ describe('generated documents', () => {
       proOptions('a4', 'portrait'),
     );
     expect(result.indexTruncated).toBe(false);
+  });
+});
+
+describe('watermark fitting', () => {
+  // A4 portrait with 14mm margins, at the angle the watermark is drawn.
+  const W = 210 - 28;
+  const H = 297 - 28;
+  const ANGLE = 34;
+
+  it('keeps the nominal size when the line already fits', () => {
+    expect(watermarkFontSize(100, W, H, ANGLE)).toBe(WATERMARK_NOMINAL_PT);
+  });
+
+  it('shrinks a line that would overflow the page', () => {
+    const size = watermarkFontSize(400, W, H, ANGLE);
+    expect(size).toBeLessThan(WATERMARK_NOMINAL_PT);
+  });
+
+  it('a longer domain always fits inside the page', () => {
+    for (const domain of ['t.co', 'tik-tak.online', 'a-really-long-domain-name.example.com']) {
+      const nominalWidth = domain.length * 7.5 + 60; // pessimistic estimate
+      const size = watermarkFontSize(nominalWidth, W, H, ANGLE);
+      const actual = (nominalWidth * size) / WATERMARK_NOMINAL_PT;
+      const rad = (ANGLE * Math.PI) / 180;
+      expect(actual * Math.cos(rad)).toBeLessThanOrEqual(W + 0.001);
+      expect(actual * Math.sin(rad)).toBeLessThanOrEqual(H + 0.001);
+    }
+  });
+
+  it('never shrinks below a legible floor', () => {
+    expect(watermarkFontSize(100000, W, H, ANGLE)).toBe(10);
   });
 });

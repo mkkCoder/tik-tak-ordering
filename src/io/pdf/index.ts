@@ -161,18 +161,63 @@ function drawHeader(doc: jsPDF, layout: Layout, project: Project, subtitle: stri
   return y + 7;
 }
 
+export const WATERMARK_NOMINAL_PT = 30;
+
+/**
+ * How large the diagonal watermark may be. The domain is part of the string, so
+ * a longer one has to shrink rather than run off the page — this is pure so the
+ * fit can be asserted without rendering a document.
+ *
+ * @param widthAtNominal width of the line measured at WATERMARK_NOMINAL_PT
+ */
+export function watermarkFontSize(
+  widthAtNominal: number,
+  usableWidth: number,
+  usableHeight: number,
+  angleDeg: number,
+): number {
+  const rad = (angleDeg * Math.PI) / 180;
+  const allowed = Math.min(usableWidth / Math.cos(rad), usableHeight / Math.sin(rad));
+  if (widthAtNominal <= allowed) return WATERMARK_NOMINAL_PT;
+  return Math.max(10, (WATERMARK_NOMINAL_PT * allowed) / widthAtNominal);
+}
+
 function drawWatermark(doc: jsPDF, layout: Layout, domain: string): void {
   doc.saveGraphicsState();
   // @ts-expect-error GState is present at runtime but missing from the typings.
   doc.setGState(new doc.GState({ opacity: 0.11 }));
   const mark = `Made with TIKTAK — ${domain}`;
+  const angle = 34;
   serifFor(doc, mark, 'bold');
-  doc.setFontSize(30);
+
+  /*
+   * Fit the mark to the page rather than trusting a fixed size: the domain is
+   * part of the string, so a longer one would run off the edge and print as
+   * "Made wi… tik-tak.onlin". Measure at the nominal size, work out how wide
+   * the rotated line is allowed to be, and shrink if it does not fit. Never
+   * grow past the nominal size — a short domain should not shout.
+   */
+  const rad = (angle * Math.PI) / 180;
+  doc.setFontSize(WATERMARK_NOMINAL_PT);
+  doc.setFontSize(
+    watermarkFontSize(doc.getTextWidth(mark), layout.right - layout.left, layout.bottom - layout.top, angle),
+  );
+  const finalWidth = doc.getTextWidth(mark);
+
   doc.setTextColor(...INK);
-  doc.text(mark, layout.width / 2, layout.height / 2, {
-    align: 'center',
-    angle: 34,
-  });
+  /*
+   * `align: 'center'` and `angle` do not compose in jsPDF — the centring is
+   * worked out before the rotation, so the line ends up hanging off a corner.
+   * The anchor is therefore placed by hand: the baseline runs along
+   * (cos θ, −sin θ), so stepping back half the text width from the page centre
+   * puts the middle of the line exactly there.
+   */
+  doc.text(
+    mark,
+    layout.width / 2 - (finalWidth / 2) * Math.cos(rad),
+    layout.height / 2 + (finalWidth / 2) * Math.sin(rad),
+    { angle },
+  );
   doc.restoreGraphicsState();
 }
 
@@ -329,7 +374,7 @@ export interface ExportResult {
 export async function buildSeatingPdf(
   project: Project,
   options: PdfOptions,
-  domain = 'tiktak.app',
+  domain = 'tik-tak.online',
 ): Promise<ExportResult> {
   const { jsPDF: JsPdf } = await import('jspdf');
   const doc = new JsPdf({

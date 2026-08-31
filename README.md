@@ -23,18 +23,35 @@ npm run size       # build, then check the gzipped budget
 
 ## Deploying to GitHub Pages
 
+The site is served from **https://tik-tak.online/** — an apex custom domain, so
+`VITE_BASE` stays unset and the base path is `/`. `public/CNAME` already holds
+the domain.
+
 The workflow in `.github/workflows/deploy.yml` lints, typechecks, tests, checks
 the bundle budget and publishes `dist/` on every push to `main`.
 
-Two things to set before the first deploy:
+First-time setup:
 
-1. **Base path.** Serving from `https://<user>.github.io/<repo>/` needs a
-   repository variable `VITE_BASE` set to `/<repo>/`. For a custom domain, leave
-   it unset — it defaults to `/` — and put the domain in `public/CNAME`.
-2. **Pages source.** Repository settings → Pages → Source → *GitHub Actions*.
+1. **Repository settings → Pages → Source → GitHub Actions.**
+2. **DNS at the registrar.** For an apex domain, four A records:
 
-`public/.nojekyll` is already there, which stops Pages from swallowing the
-hashed asset filenames.
+   ```
+   @   A   185.199.108.153
+   @   A   185.199.109.153
+   @   A   185.199.110.153
+   @   A   185.199.111.153
+   www CNAME <user>.github.io.
+   ```
+
+   (Add the AAAA records too if the registrar supports them.) Then, in Pages,
+   set the custom domain to `tik-tak.online` and tick **Enforce HTTPS** once the
+   certificate has been issued — that can take up to an hour.
+3. Nothing else. `public/.nojekyll` is already there, which stops Pages from
+   swallowing the hashed asset filenames.
+
+If the site ever moves to a project subpath (`<user>.github.io/<repo>/`), set a
+repository variable `VITE_BASE` to `/<repo>/` and delete `public/CNAME`. Every
+asset URL is base-aware, so nothing else needs touching.
 
 ## Payments
 
