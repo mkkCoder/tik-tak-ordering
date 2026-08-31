@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# The planner itself is an application, not a page worth indexing.
+Disallow: /app/
+
+Sitemap: https://tiktak.app/sitemap.xml

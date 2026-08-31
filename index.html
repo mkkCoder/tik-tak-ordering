@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TIKTAK — wedding seating chart maker and event seating planner</title>
+    <meta
+      name="description"
+      content="Free event seating planner. Import your guest list, drag guests onto tables, mark who can't sit together, and print a seating chart. Everything stays in your browser."
+    />
+    <link rel="canonical" href="https://tiktak.app/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="TIKTAK — seat 200 guests without a spreadsheet" />
+    <meta
+      property="og:description"
+      content="Drag guests onto tables, mark who can't sit together, print the chart. Nothing leaves your browser."
+    />
+    <meta property="og:url" content="https://tiktak.app/" />
+    <meta property="og:image" content="https://tiktak.app/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin-full-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-tight-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TIKTAK",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Event seating planner",
+        "operatingSystem": "Any modern web browser",
+        "url": "https://tiktak.app/",
+        "description": "Event seating planner that runs entirely in your browser. Import a guest list, arrange tables, set seating constraints and print a seating chart.",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Free",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Unlimited guests and tables, import, constraints, auto-arrange and CSV export."
+          },
+          {
+            "@type": "Offer",
+            "name": "Pro",
+            "price": "19",
+            "priceCurrency": "USD",
+            "description": "One-time payment for clean PDF exports and printable place cards."
+          }
+        ],
+        "featureList": [
+          "Spreadsheet guest list import",
+          "Drag and drop table plan",
+          "Seating constraints",
+          "Automatic seating arrangement",
+          "Printable seating chart and place cards"
+        ]
+      }
+    </script>
+
+    <!-- Inlined so the page is readable before any request for CSS returns. -->
+    <style>
+      @font-face {
+        font-family: 'Inter Tight';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url('/fonts/inter-tight-latin-wght-normal.woff2') format('woff2-variations');
+      }
+      @font-face {
+        font-family: 'Fraunces';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url('/fonts/fraunces-latin-full-normal.woff2') format('woff2-variations');
+      }
+
+      :root {
+        --paper: #fbf9f5;
+        --linen: #e8e2d6;
+        --ink: #16202b;
+        --slate: #576775;
+        --sage: #4e6b57;
+        --hairline: rgba(22, 32, 43, 0.12);
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-weight: 600;
+        line-height: 1.12;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      header.top {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 0;
+      }
+
+      .wordmark {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-weight: 600;
+        font-size: 19px;
+        letter-spacing: 0.01em;
+      }
+
+      .top nav {
+        margin-left: auto;
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        color: var(--slate);
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sage);
+        color: var(--paper);
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 3px;
+        padding: 12px 22px;
+        font-size: 16px;
+        transition: background-color 120ms ease;
+      }
+
+      .cta:hover {
+        background: #435c4b;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        gap: 48px;
+        align-items: center;
+        padding: 36px 0 64px;
+      }
+
+      .hero h1 {
+        font-size: clamp(34px, 5vw, 52px);
+      }
+
+      .hero p.sub {
+        font-size: 18px;
+        color: var(--slate);
+        margin: 18px 0 26px;
+        max-width: 34ch;
+      }
+
+      .hero .note {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--slate);
+      }
+
+      /* Fixed aspect box: the static SVG and the mounted canvas occupy exactly
+         the same space, so hydration never shifts the layout. */
+      .hero-figure {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        border: 1px solid var(--hairline);
+        border-radius: 4px;
+        background: var(--paper);
+        overflow: hidden;
+      }
+
+      .hero-figure > svg,
+      .hero-figure > .tk-hero-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* The mounted planner renders its own full-size root inside the mount. */
+      .tk-hero-canvas > * {
+        width: 100%;
+        height: 100%;
+      }
+
+      .hero-figure figcaption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: var(--slate);
+        background: linear-gradient(to top, rgba(251, 249, 245, 0.95), rgba(251, 249, 245, 0));
+        pointer-events: none;
+      }
+
+      section {
+        padding: 56px 0;
+        border-top: 1px solid var(--hairline);
+      }
+
+      section h2 {
+        font-size: clamp(24px, 3vw, 32px);
+        margin-bottom: 10px;
+      }
+
+      section > .wrap > p.lede {
+        color: var(--slate);
+        max-width: 58ch;
+        margin: 0 0 32px;
+      }
+
+      .blocks {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 28px;
+      }
+
+      .block img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 1px solid var(--hairline);
+        border-radius: 3px;
+        background: var(--linen);
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: top left;
+      }
+
+      .block h3 {
+        font-size: 18px;
+        margin: 14px 0 6px;
+      }
+
+      .block p {
+        margin: 0;
+        color: var(--slate);
+        font-size: 15px;
+      }
+
+      .pricing {
+        background: var(--linen);
+      }
+
+      .pricing .line {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-size: clamp(20px, 2.6vw, 27px);
+        max-width: 46ch;
+      }
+
+      .faq dl {
+        margin: 0;
+        display: grid;
+        gap: 22px;
+        max-width: 68ch;
+      }
+
+      .faq dt {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .faq dd {
+        margin: 0;
+        color: var(--slate);
+      }
+
+      footer {
+        border-top: 1px solid var(--hairline);
+        padding: 28px 0 48px;
+        font-size: 13px;
+        color: var(--slate);
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      footer .spacer {
+        margin-left: auto;
+      }
+
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 28px;
+          padding-bottom: 40px;
+        }
+        .blocks {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .top nav {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition-duration: 0.001ms !important;
+          animation-duration: 0.001ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <span class="wordmark">TIKTAK</span>
+        <nav>
+          <a href="#how">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">Questions</a>
+        </nav>
+      </header>
+
+    </div>
+
+    <main>
+      <div class="wrap">
+        <div class="hero">
+        <div>
+          <h1>Seat 200 guests without a spreadsheet.</h1>
+          <p class="sub">
+            Drag guests onto tables, mark who can&rsquo;t sit together, print the chart. Nothing
+            leaves your browser.
+          </p>
+          <a class="cta" href="/app/">Open the planner</a>
+          <p class="note">No signup, no email. Free to plan.</p>
+        </div>
+
+        <figure class="hero-figure" id="hero" style="margin: 0">
+          <!-- Painted from the HTML itself: no JavaScript, no layout shift.
+               Replaced by the real, draggable planner canvas once it loads. -->
+          <svg viewBox="0 0 400 300" role="img" aria-label="A seating plan with seven tables, most seats taken">
+            <rect width="400" height="300" fill="var(--paper)" />
+            <g stroke="var(--slate)" stroke-opacity="0.16" stroke-width="1">
+              <path d="M0 50h400M0 100h400M0 150h400M0 200h400M0 250h400" />
+              <path d="M50 0v300M100 0v300M150 0v300M200 0v300M250 0v300M300 0v300M350 0v300" />
+            </g>
+            <g id="hero-tables"></g>
+          </svg>
+          <figcaption id="hero-caption">
+            A real plan &mdash; it becomes draggable once the page finishes loading.
+          </figcaption>
+          </figure>
+        </div>
+      </div>
+
+    <section id="how">
+      <div class="wrap">
+        <h2>Three steps, one afternoon</h2>
+        <p class="lede">
+          The whole job is getting a list of names into a shape you can hang by the door. TIKTAK
+          does that and stops.
+        </p>
+        <div class="blocks">
+          <div class="block">
+            <img
+              src="/shots/import.png"
+              width="640"
+              height="400"
+              loading="lazy"
+              decoding="async"
+              alt="The import screen, showing spreadsheet columns being matched to name, party and seats"
+            />
+            <h3>Paste your spreadsheet</h3>
+            <p>
+              Copy the columns straight out of Excel or Google Sheets. TIKTAK works out which
+              column is which, expands &ldquo;Cohen, 4&rdquo; into four guests, and flags anyone
+              listed twice.
+            </p>
+          </div>
+          <div class="block">
+            <img
+              src="/shots/constraints.png"
+              width="640"
+              height="400"
+              loading="lazy"
+              decoding="async"
+              alt="The floor plan with one table outlined in red because two guests who must not sit together are seated at it"
+            />
+            <h3>Say who can&rsquo;t sit together</h3>
+            <p>
+              Two rules — must sit with, must not sit with. A table that breaks one turns red the
+              moment it does, so you find out while you are looking at it.
+            </p>
+          </div>
+          <div class="block">
+            <img
+              src="/shots/print.png"
+              width="640"
+              height="400"
+              loading="lazy"
+              decoding="async"
+              alt="A printed seating chart: floor plan, per-table lists and an alphabetical guest index"
+            />
+            <h3>Print the chart</h3>
+            <p>
+              A floor plan, a list for every table, and an alphabetical index of every guest with
+              their table number. Real text in a real PDF, sharp at any size.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <div class="wrap">
+        <h2>Pricing</h2>
+        <p class="line">
+          Free to plan, forever. $19 once — not a subscription — when you want exports without a
+          watermark.
+        </p>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="wrap">
+        <h2>Questions people actually ask</h2>
+        <dl>
+          <div>
+            <dt>Where is my guest list stored?</dt>
+            <dd>
+              In your browser, on your own device. There is no account and no server to send it to
+              — TIKTAK has no database at all. The only network requests it ever makes are a
+              licence check when you activate Pro, and a privacy-friendly page counter.
+            </dd>
+          </div>
+          <div>
+            <dt>What happens if I clear my browser?</dt>
+            <dd>
+              You lose the plan, the same way you would lose an unsaved document. Use
+              <em>Project &rarr; Export project file</em> to save a copy you can keep. That file is
+              the backup.
+            </dd>
+          </div>
+          <div>
+            <dt>Can I work from two computers?</dt>
+            <dd>
+              Yes, through the project file: export it on one machine, open it on the other. There
+              is no live sync, because that would need the server TIKTAK deliberately does not
+              have.
+            </dd>
+          </div>
+          <div>
+            <dt>Is this a subscription?</dt>
+            <dd>
+              No. $19 once, for good. Planning — guests, tables, constraints, auto-arrange and CSV
+              export — is free and unlimited whether you ever pay or not.
+            </dd>
+          </div>
+          <div>
+            <dt>How many guests can it handle?</dt>
+            <dd>
+              Unlimited on both tiers. It is built and tested against a thousand guests, which is
+              well past the point where most venues run out of room.
+            </dd>
+          </div>
+          <div>
+            <dt>Does it work on a phone?</dt>
+            <dd>
+              You can view a plan and export from a phone. Arranging a room really wants a bigger
+              screen, so on a small one TIKTAK opens read-only rather than pretending otherwise.
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+    </main>
+
+    <footer>
+      <div class="wrap" style="display: flex; gap: 16px; width: 100%; flex-wrap: wrap">
+        <span>TIKTAK</span>
+        <span class="spacer"></span>
+        <a href="/app/">Open the planner</a>
+      </div>
+    </footer>
+
+    <script type="module">
+      // First paint is the static SVG above. The real planner canvas is fetched
+      // only after the page has loaded, so a slow connection gets a readable
+      // page immediately instead of a spinner.
+      const figure = document.getElementById('hero');
+
+      // Draw the static tables inline — cheaper than shipping them as markup.
+      const tables = [
+        [200, 46, 0],
+        [110, 130, 26],
+        [200, 130, 26],
+        [290, 130, 26],
+        [110, 225, 26],
+        [200, 225, 26],
+        [290, 225, 26],
+      ];
+      const svgNs = 'http://www.w3.org/2000/svg';
+      const host = document.getElementById('hero-tables');
+      const el = (name, attrs) => {
+        const node = document.createElementNS(svgNs, name);
+        for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
+        return node;
+      };
+      tables.forEach(([cx, cy, r], i) => {
+        if (r === 0) {
+          host.appendChild(
+            el('rect', {
+              x: cx - 52, y: cy - 11, width: 104, height: 22, rx: 1,
+              fill: 'var(--paper)', stroke: 'var(--ink)', 'stroke-width': 1.2,
+            }),
+          );
+          for (let s = 0; s < 6; s++) {
+            host.appendChild(
+              el('circle', { cx: cx - 45 + s * 18, cy: cy - 19, r: 5,
+                fill: s < 4 ? 'var(--ink)' : 'var(--paper)', stroke: 'var(--slate)', 'stroke-width': 1 }),
+            );
+          }
+          return;
+        }
+        host.appendChild(
+          el('circle', { cx, cy, r, fill: 'var(--paper)', stroke: 'var(--ink)', 'stroke-width': 1.2 }),
+        );
+        const seats = 10;
+        for (let s = 0; s < seats; s++) {
+          const a = (-90 + (360 * s) / seats) * (Math.PI / 180);
+          const taken = (s + i) % 10 < 6;
+          host.appendChild(
+            el('circle', {
+              cx: cx + Math.cos(a) * (r + 8),
+              cy: cy + Math.sin(a) * (r + 8),
+              r: 4.6,
+              fill: taken ? 'var(--ink)' : 'var(--paper)',
+              stroke: 'var(--slate)',
+              'stroke-width': 1,
+            }),
+          );
+        }
+      });
+
+      function hydrate() {
+        import('./landing/hero.tsx')
+          .then(({ mountHero }) => {
+            const mount = document.createElement('div');
+            mount.className = 'tk-hero-canvas';
+            figure.insertBefore(mount, figure.firstChild);
+            mountHero(mount);
+            const staticSvg = figure.querySelector('svg');
+            if (staticSvg) staticSvg.remove();
+            const caption = document.getElementById('hero-caption');
+            if (caption) caption.textContent = 'A real plan — drag a table, or scroll to zoom.';
+          })
+          .catch(() => {
+            // The static plan is a perfectly good fallback; leave it in place.
+          });
+      }
+
+      if ('requestIdleCallback' in window) {
+        window.addEventListener('load', () => requestIdleCallback(hydrate, { timeout: 2500 }));
+      } else {
+        window.addEventListener('load', () => setTimeout(hydrate, 400));
+      }
+    </script>
+
+    <!-- Privacy-friendly, cookieless page counting. No consent banner needed.
+         Loaded only on the real site, so local and preview builds neither skew
+         the numbers nor log an error when the counter cannot be reached. -->
+    <script>
+      if (!/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) && location.protocol === 'https:') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.dataset.goatcounter = 'https://tiktak.goatcounter.com/count';
+        s.src = 'https://gc.zgo.at/count.js';
+        document.body.appendChild(s);
+      }
+    </script>
+  </body>
+</html>

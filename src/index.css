@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   Fonts. Bundled from npm at build time, served from public/fonts.
+   No runtime CDN, no Google Fonts request.
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/inter-tight-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/inter-tight-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/fraunces-latin-full-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/fraunces-latin-ext-full-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --paper: #fbf9f5; /* floor plan surface */
+  --linen: #e8e2d6; /* panels, side chrome */
+  --ink: #16202b; /* primary text, table outlines */
+  /*
+   * The brief specifies #5B6B7A. That reaches 5.22:1 on --paper but only
+   * 4.25:1 on --linen, and the panels are linen — under AA for body text,
+   * which the brief also requires. This is the same hue 2% darker: 4.52:1 on
+   * linen, 5.54:1 on paper, and indistinguishable side by side. Every
+   * text/background pair in the interface now clears 4.5:1.
+   */
+  --slate: #576775; /* secondary text, grid lines */
+  --sage: #4e6b57; /* primary action, valid state */
+  --flag: #b3261e; /* constraint violations only */
+
+  /* Derived, never new hues: a deeper linen for panel edges and a hairline. */
+  --linen-deep: #ded7c8;
+  --hairline: rgba(22, 32, 43, 0.12);
+
+
+  color-scheme: light;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family:
+    'Inter Tight',
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The planner owns the whole viewport; the landing page keeps its own
+   background and has to scroll, so both rules are scoped to the app. */
+body[data-tiktak-app] {
+  overflow: hidden;
+  background: var(--linen);
+}
+
+/* Focus is always visible, never removed. */
+:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Thin, quiet scrollbars inside panels. */
+.tk-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--linen-deep) transparent;
+}
+.tk-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.tk-scroll::-webkit-scrollbar-thumb {
+  background: var(--linen-deep);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+.tk-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
