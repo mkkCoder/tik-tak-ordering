@@ -28,6 +28,10 @@ export default defineConfig(({ mode }) => {
             __dirname,
             'guides/avery-5302-place-card-template/index.html',
           ),
+          roundTable: resolve(
+            __dirname,
+            'guides/how-many-people-fit-at-a-round-table/index.html',
+          ),
         },
       },
     },

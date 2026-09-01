@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How many people fit at a 60-inch round table? | TIKTAK</title>
+    <meta
+      name="description"
+      content="Eight comfortably, ten if you squeeze. The arithmetic behind it, a table of every common diameter, what ten actually feels like in inches of elbow room, and how much floor space to leave between tables."
+    />
+    <link
+      rel="canonical"
+      href="https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="How many people fit at a 60-inch round table?" />
+    <meta
+      property="og:description"
+      content="Eight comfortably, ten if you squeeze - and the one calculation that answers it for any table size."
+    />
+    <meta
+      property="og:url"
+      content="https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
+    />
+    <meta property="og:image" content="https://tik-tak.online/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How many people fit at a 60-inch round table?",
+        "description": "The seating capacity of round banquet tables by diameter, the arithmetic behind the numbers, and how much space each guest actually gets when you add one more chair.",
+        "author": { "@type": "Organization", "name": "TIKTAK" },
+        "publisher": { "@type": "Organization", "name": "TIKTAK" },
+        "mainEntityOfPage": "https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
+      }
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Inter Tight';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url('/fonts/inter-tight-latin-wght-normal.woff2') format('woff2-variations');
+      }
+      @font-face {
+        font-family: 'Fraunces';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url('/fonts/fraunces-latin-full-normal.woff2') format('woff2-variations');
+      }
+
+      :root {
+        --paper: #fbf9f5;
+        --linen: #e8e2d6;
+        --ink: #16202b;
+        --slate: #576775;
+        --sage: #4e6b57;
+        --flag: #b3261e;
+        --hairline: rgba(22, 32, 43, 0.12);
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-weight: 600;
+        line-height: 1.15;
+        margin: 0;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+      }
+
+      h1 {
+        font-size: clamp(30px, 5vw, 42px);
+      }
+      h2 {
+        font-size: 25px;
+        margin-top: 48px;
+      }
+      h3 {
+        font-size: 18px;
+        font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+        margin-top: 28px;
+      }
+
+      p {
+        margin: 16px 0;
+      }
+
+      a {
+        color: var(--sage);
+      }
+
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      header.top {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--hairline);
+      }
+
+      .wordmark {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-weight: 600;
+        font-size: 19px;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .top nav {
+        margin-left: auto;
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+      }
+
+      .top nav a {
+        color: var(--slate);
+      }
+
+      article {
+        max-width: 40rem;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+      }
+
+      .kicker {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--slate);
+        font-weight: 600;
+        margin: 0 0 12px;
+      }
+
+      .standfirst {
+        font-size: 19px;
+        color: var(--slate);
+        margin: 20px 0 0;
+      }
+
+      figure {
+        margin: 32px 0;
+      }
+
+      figcaption {
+        font-size: 14px;
+        color: var(--slate);
+        margin-top: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+        margin: 8px 0;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 10px 12px 10px 0;
+        border-bottom: 1px solid var(--hairline);
+        vertical-align: top;
+      }
+
+      th {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--slate);
+        font-weight: 600;
+      }
+
+      td:last-child {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .warn {
+        border-left: 3px solid var(--flag);
+        background: rgba(179, 38, 30, 0.05);
+        padding: 14px 18px;
+        margin: 28px 0;
+        border-radius: 0 3px 3px 0;
+      }
+
+      .warn strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .offer {
+        background: var(--linen);
+        border: 1px solid var(--hairline);
+        border-radius: 4px;
+        padding: 24px;
+        margin: 40px 0;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sage);
+        color: var(--paper);
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 3px;
+        padding: 12px 22px;
+        margin-top: 8px;
+        transition: background-color 120ms ease;
+      }
+
+      .cta:hover {
+        background: #435c4b;
+      }
+
+      ol,
+      ul {
+        padding-left: 1.2em;
+      }
+
+      li {
+        margin: 10px 0;
+      }
+
+      dt {
+        font-weight: 600;
+        margin-top: 22px;
+      }
+
+      dd {
+        margin: 6px 0 0;
+        color: var(--slate);
+      }
+
+      footer {
+        border-top: 1px solid var(--hairline);
+        padding: 24px 0 48px;
+        font-size: 14px;
+        color: var(--slate);
+      }
+
+      footer a {
+        color: var(--slate);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition-duration: 0.001ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <a class="wordmark" href="/">TIKTAK</a>
+        <nav>
+          <a href="/">Seating planner</a>
+          <a href="/app/">Open the planner</a>
+        </nav>
+      </header>
+    </div>
+
+    <article>
+      <p class="kicker">Seating guide</p>
+      <h1>How many people fit at a 60-inch round table?</h1>
+      <p class="standfirst">
+        Eight comfortably. Ten if you squeeze, and everyone will know it. Here is the
+        arithmetic that gives you the answer for any table size, and what the tenth chair
+        actually costs.
+      </p>
+
+      <h2>The short answer</h2>
+
+      <p>
+        A 60-inch round table seats <strong>eight</strong> guests with room to eat, and
+        <strong>ten</strong> if you are short of space and willing to trade elbow room for
+        it. Caterers and rental companies quote eight; wedding venues quote ten because it
+        lets them sell the room to more people.
+      </p>
+
+      <p>Both numbers are right. They are answers to different questions.</p>
+
+      <h2>Where the number comes from</h2>
+
+      <p>
+        Guests sit around the edge, so what matters is the circumference, not the area. A
+        person needs roughly <strong>24 inches</strong> of table edge &mdash; enough for a
+        place setting and two elbows. That gives one calculation that works for every table:
+      </p>
+
+      <div class="warn" style="border-left-color: var(--sage); background: rgba(78, 107, 87, 0.06)">
+        <strong>Seats = (diameter &times; 3.14) &divide; 24 inches</strong>
+        For a 60-inch table: 60 &times; 3.14 = 188 inches of edge, divided by 24, is 7.85
+        &mdash; so eight chairs, and the arithmetic is telling you the eighth is already
+        snug.
+      </div>
+
+      <h2>Every common size</h2>
+
+      <div style="overflow-x: auto">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Diameter</th>
+              <th scope="col">Edge available</th>
+              <th scope="col">Comfortable</th>
+              <th scope="col">Squeezed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>36 in (3 ft)</td><td>113 in</td><td>4</td><td>5</td></tr>
+            <tr><td>48 in (4 ft)</td><td>151 in</td><td>6</td><td>8</td></tr>
+            <tr><td>60 in (5 ft)</td><td>188 in</td><td>8</td><td>10</td></tr>
+            <tr><td>72 in (6 ft)</td><td>226 in</td><td>10</td><td>12</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        These match what rental suppliers publish, which is a good sign: the formula is not
+        a theory, it is the same arithmetic the industry already runs.
+      </p>
+
+      <h2>What the tenth chair costs</h2>
+
+      <p>
+        Put ten people at a 60-inch table and each one gets 18.8 inches of edge instead of
+        23.6. That is the difference between a comfortable place setting and one where the
+        water glasses touch and someone has to lean back so their neighbour can cut.
+      </p>
+
+      <p>It is worth it when:</p>
+
+      <ul>
+        <li>the room simply will not hold more tables</li>
+        <li>the meal is buffet or family-style, so there are fewer glasses and plates</li>
+        <li>the table has no centrepiece competing for the middle</li>
+      </ul>
+
+      <p>It is not worth it when:</p>
+
+      <ul>
+        <li>there is a plated dinner with more than two courses</li>
+        <li>the centrepiece is tall or wide</li>
+        <li>the guests at that table include anyone who will struggle to get in and out</li>
+      </ul>
+
+      <h2>Don't forget the floor</h2>
+
+      <p>
+        Fitting guests <em>at</em> tables is only half of it. Tables also need space
+        <em>between</em> them: two chairs backing onto each other take about 18 inches each,
+        and a person carrying two plates needs roughly two feet to pass between them. That
+        comes to about <strong>five feet from table edge to table edge</strong> &mdash; and
+        it is the number people forget when they work out how many tables a room holds.
+      </p>
+
+      <p>
+        A 60-inch table therefore occupies a circle roughly 10 feet across once you include
+        its chairs and the walkway around it, not 5 feet.
+      </p>
+
+      <h2>Round or rectangular?</h2>
+
+      <p>
+        A 6-foot banquet table (30 &times; 72 inches) seats six to eight, and an 8-foot one
+        seats eight to ten &mdash; similar numbers per table, but the two shapes behave
+        differently. Round tables let everyone see everyone, which is why they dominate
+        weddings. Long tables fit more people into a narrow room and look better in
+        photographs, but a guest can only really talk to four people all evening.
+      </p>
+
+      <div class="offer">
+        <h3 style="margin-top: 0">Let the plan do the arithmetic</h3>
+        <p>
+          TIKTAK draws every table at its true size. Set a round table to eight seats and it
+          is drawn as a 60-inch table; set it to ten and the circle grows, because it has to
+          &mdash; the app allows 60&nbsp;cm of edge per guest, which is the 24-inch rule in
+          metric. So the floor plan you are looking at is the floor plan you will actually
+          have.
+        </p>
+        <p>
+          Paste your guest list, drag people onto tables, and print the chart. Planning is
+          free and nothing you type ever leaves your device.
+        </p>
+        <a class="cta" href="/app/">Open the planner</a>
+      </div>
+
+      <h2>Questions people ask</h2>
+
+      <dl>
+        <dt>Can a 60-inch table seat 12?</dt>
+        <dd>
+          Physically yes, at 15.7 inches each &mdash; narrower than a dining chair. Nobody
+          will eat comfortably. Use a 72-inch table instead.
+        </dd>
+
+        <dt>How many 60-inch tables do I need for 150 guests?</dt>
+        <dd>
+          Nineteen at eight per table, or fifteen at ten. Add one for anyone you have
+          forgotten, because you have forgotten someone.
+        </dd>
+
+        <dt>Does the head table follow the same rule?</dt>
+        <dd>
+          No. A head table seats on one side only, so it needs about 24 inches of length per
+          person rather than per edge &mdash; a 12-foot head table takes six.
+        </dd>
+
+        <dt>What about children?</dt>
+        <dd>
+          Two children fit where one adult would at the squeeze, but only if they are at the
+          same table and small. Planning them as adults and being pleasantly surprised beats
+          the reverse.
+        </dd>
+      </dl>
+
+      <p style="margin-top: 40px; color: var(--slate); font-size: 15px">
+        Capacities cross-checked against published banquet-table guidance from rental
+        suppliers; the arithmetic is circumference divided by 24 inches per guest, which is
+        the same figure TIKTAK uses internally as 60&nbsp;cm.
+      </p>
+    </article>
+
+    <div class="wrap">
+      <footer>
+        <a href="/">TIKTAK seating planner</a> &middot;
+        <a href="/guides/avery-5302-place-card-template/">Avery 5302 template</a> &middot;
+        <a href="/app/">Open the planner</a>
+      </footer>
+    </div>
+  </body>
+</html>
