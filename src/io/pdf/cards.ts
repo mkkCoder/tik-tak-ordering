@@ -1,6 +1,7 @@
 import type { jsPDF } from 'jspdf';
 import type { Project } from '@/model/types';
 import { surnameOf } from './index';
+import { installFonts } from './fonts';
 
 /**
  * Place cards and escort cards.
@@ -362,7 +363,6 @@ export async function buildCardsPdf(
   options: CardOptions,
 ): Promise<{ bytes: ArrayBuffer; blob: Blob; pages: number; cards: number }> {
   const { jsPDF: JsPdf } = await import('jspdf');
-  const { FRAUNCES_REGULAR, FRAUNCES_BOLD, fraunceCanRender } = await import('./fraunces');
   const { fixCidOrdering } = await import('./index');
 
   const sheet = options.sheet;
@@ -373,17 +373,15 @@ export async function buildCardsPdf(
     compress: true,
   });
 
-  doc.addFileToVFS('Fraunces-Regular.ttf', FRAUNCES_REGULAR);
-  doc.addFont('Fraunces-Regular.ttf', 'Fraunces', 'normal');
-  doc.addFileToVFS('Fraunces-Bold.ttf', FRAUNCES_BOLD);
-  doc.addFont('Fraunces-Bold.ttf', 'Fraunces', 'bold');
-
-  const serif = (text: string, weight: 'normal' | 'bold') => {
-    if (fraunceCanRender(text)) doc.setFont('Fraunces', weight);
-    else doc.setFont('times', weight);
-  };
-
   const entries = buildCards(project, options.kind);
+
+  // The Hebrew font is embedded only if a name on these cards needs it.
+  const selectFont = await installFonts(
+    doc,
+    entries.map((e) => `${e.name} ${e.table}`).join(' '),
+  );
+
+  const serif = (text: string, weight: 'normal' | 'bold') => void selectFont(text, weight);
   const slots = slotsFor(sheet);
 
   entries.forEach((entry, i) => {

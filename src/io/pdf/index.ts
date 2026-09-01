@@ -1,6 +1,7 @@
 import type { jsPDF } from 'jspdf';
 import type { Guest, Project, Table } from '@/model/types';
 import { footprint, seatPositions } from '@/model/seating';
+import { installFonts, type SelectFont } from './fonts';
 
 /**
  * The printed chart. This is the artefact people pay for, so it is drawn as
@@ -44,26 +45,15 @@ interface Layout {
   bottom: number;
 }
 
-let canRender: (text: string) => boolean = () => false;
-
-/** Registered once per document; jsPDF keeps fonts in a per-document VFS. */
-async function installFonts(doc: jsPDF): Promise<void> {
-  const { FRAUNCES_REGULAR, FRAUNCES_BOLD, fraunceCanRender } = await import('./fraunces');
-  doc.addFileToVFS('Fraunces-Regular.ttf', FRAUNCES_REGULAR);
-  doc.addFont('Fraunces-Regular.ttf', 'Fraunces', 'normal');
-  doc.addFileToVFS('Fraunces-Bold.ttf', FRAUNCES_BOLD);
-  doc.addFont('Fraunces-Bold.ttf', 'Fraunces', 'bold');
-  canRender = fraunceCanRender;
-}
+let selectFont: SelectFont = (text) => text;
 
 /**
- * Select Fraunces for a specific string, or Times if that string contains a
- * character the embedded subset lacks. jsPDF truncates a string at the first
- * glyph it cannot encode, so an unchecked name would come out half-printed.
+ * Select the font that can draw this string, and hand back the string in
+ * drawing order. `doc.text` is wrapped to reorder RTL runs as well, so every
+ * draw is covered whether or not it came through here.
  */
-function serifFor(doc: jsPDF, text: string, weight: 'normal' | 'bold'): void {
-  if (canRender(text)) doc.setFont('Fraunces', weight);
-  else doc.setFont('times', weight);
+function serifFor(_doc: jsPDF, text: string, weight: 'normal' | 'bold'): void {
+  selectFont(text, weight);
 }
 
 function layoutOf(doc: jsPDF): Layout {
@@ -383,7 +373,14 @@ export async function buildSeatingPdf(
     format: options.format,
     compress: true,
   });
-  await installFonts(doc);
+  // Everything the document will draw, so the Hebrew font is embedded only when
+  // a name actually needs it.
+  const sample = [
+    project.event.name,
+    ...project.guests.map((g) => g.name),
+    ...project.tables.map((t) => t.label),
+  ].join(' ');
+  selectFont = await installFonts(doc, sample);
 
   const layout = layoutOf(doc);
   const sections = buildTableSections(project);
