@@ -1,4 +1,4 @@
-import { useCallback, useDeferredValue, useMemo, useRef, useState } from 'react';
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useProjectStore, withHistoryGroup } from '@/store/project';
 import { counters } from '@/store/selectors';
@@ -65,6 +65,23 @@ export function GuestPanel() {
   }, []);
 
   const checkedIds = useMemo(() => [...checked], [checked]);
+
+  // Parties the selection could join, with their current size so two families
+  // called "Cohen" can be told apart. A party everyone selected is already in
+  // is dropped: offering it would be a no-op.
+  const partyChoices = useMemo(() => {
+    const size = new Map<Id, number>();
+    const partyOf = new Map<Id, Id | null>();
+    for (const g of guests) {
+      partyOf.set(g.id, g.partyId);
+      if (g.partyId) size.set(g.partyId, (size.get(g.partyId) ?? 0) + 1);
+    }
+    const selectedParties = new Set(checkedIds.map((id) => partyOf.get(id) ?? null));
+    const redundant = selectedParties.size === 1 ? [...selectedParties][0] : null;
+    return parties
+      .filter((p) => p.id !== redundant)
+      .map((p) => ({ id: p.id, label: p.label, size: size.get(p.id) ?? 0 }));
+  }, [guests, parties, checkedIds]);
 
   return (
     <div className="flex h-full min-h-0 flex-col border-r border-[color:var(--hairline)]">
@@ -164,9 +181,15 @@ export function GuestPanel() {
       <GroupDialog
         open={grouping}
         count={checkedIds.length}
+        parties={partyChoices}
         onClose={() => setGrouping(false)}
-        onConfirm={(label) => {
+        onCreate={(label) => {
           withHistoryGroup(() => useProjectStore.getState().groupAsParty(checkedIds, label));
+          setChecked(new Set());
+          setGrouping(false);
+        }}
+        onAdd={(partyId) => {
+          withHistoryGroup(() => useProjectStore.getState().addToParty(checkedIds, partyId));
           setChecked(new Set());
           setGrouping(false);
         }}
@@ -298,8 +321,9 @@ function SelectionBar({
     <div className="flex items-center gap-1.5 border-y border-[color:var(--hairline)] bg-paper px-3 py-1.5">
       <span className="text-[12px] text-slate">{count} selected</span>
       <div className="ml-auto flex items-center gap-1.5">
+        {/* One dialog, two outcomes: join a family that exists, or start one. */}
         <Button size="sm" onClick={onGroup}>
-          Group as party
+          Group…
         </Button>
         <Button size="sm" variant="danger" onClick={onDelete}>
           Delete
@@ -504,28 +528,51 @@ function GuestItem({
   );
 }
 
+/**
+ * One dialog for both halves of the same question: which party do these guests
+ * belong to?
+ *
+ * It used to only make new ones, which meant a late RSVP joining the Cohens
+ * required re-selecting the whole family and grouping again — and that quietly
+ * replaced the party, losing the name the user had typed for it. Existing
+ * parties come first here because that is the more common move once a list has
+ * been entered; a brand-new party is still a name and one press away.
+ */
 function GroupDialog({
   open,
   count,
+  parties,
   onClose,
-  onConfirm,
+  onCreate,
+  onAdd,
 }: {
   open: boolean;
   count: number;
+  parties: Array<{ id: Id; label: string; size: number }>;
   onClose: () => void;
-  onConfirm: (label: string) => void;
+  onCreate: (label: string) => void;
+  onAdd: (partyId: Id) => void;
 }) {
   const [label, setLabel] = useState('');
+  const noun = count === 1 ? 'guest' : 'guests';
+
+  // Clear the name between openings. Left alone, the field still held "Cohen"
+  // from the last party, so pressing Enter to add the next guest made a second
+  // family with the same name instead of joining the first.
+  useEffect(() => {
+    if (open) setLabel('');
+  }, [open]);
+
   return (
     <Dialog
       open={open}
-      title="Group as a party"
+      title={`Put ${count} ${noun} in a party`}
       onClose={onClose}
       footer={
         <>
           <Button onClick={onClose}>Cancel</Button>
-          <Button variant="primary" onClick={() => onConfirm(label)}>
-            Group {count}
+          <Button variant="primary" onClick={() => onCreate(label)}>
+            {parties.length > 0 ? 'Create party' : `Group ${count}`}
           </Button>
         </>
       }
@@ -533,14 +580,39 @@ function GroupDialog({
       <p className="mb-3 text-slate">
         A party arrives together and is seated together. Auto-arrange keeps them at one table.
       </p>
+
+      {parties.length > 0 && (
+        <div className="mb-4">
+          <p className="mb-1.5 text-micro uppercase tracking-wide text-slate">
+            Add to an existing party
+          </p>
+          <ul className="tk-scroll max-h-40 overflow-y-auto rounded-[3px] border border-[color:var(--hairline)]">
+            {parties.map((p) => (
+              <li key={p.id} className="border-b border-[color:var(--hairline)] last:border-b-0">
+                <button
+                  type="button"
+                  onClick={() => onAdd(p.id)}
+                  className="flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left text-[13px] transition-colors hover:bg-[color:rgba(22,32,43,0.06)]"
+                >
+                  <span className="truncate">{p.label}</span>
+                  <span className="shrink-0 text-micro text-slate">
+                    {p.size} {p.size === 1 ? 'guest' : 'guests'}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <Field
         data-autofocus
-        label="Party name"
+        label={parties.length > 0 ? 'Or start a new party' : 'Party name'}
         value={label}
         onChange={(e) => setLabel(e.target.value)}
         placeholder="Cohen +3"
         onKeyDown={(e) => {
-          if (e.key === 'Enter') onConfirm(label);
+          if (e.key === 'Enter') onCreate(label);
         }}
       />
     </Dialog>

@@ -115,6 +115,47 @@ describe('parties', () => {
     expect(s().guests[0]?.partyId).toBe(s().parties[0]?.id);
   });
 
+  it('addToParty keeps the party and its name, unlike regrouping', () => {
+    const a = step(() => s().addGuest('A'));
+    const b = step(() => s().addGuest('B'));
+    const p = step(() => s().groupAsParty([a], 'Cohen')) as string;
+
+    step(() => s().addToParty([b], p));
+    expect(s().parties).toHaveLength(1);
+    expect(s().parties[0]).toMatchObject({ id: p, label: 'Cohen' });
+    expect(s().guests.every((g) => g.partyId === p)).toBe(true);
+
+    undo();
+    expect(s().guests.find((g) => g.id === b)?.partyId).toBeNull();
+    expect(s().parties[0]?.label).toBe('Cohen');
+  });
+
+  it('addToParty prunes a party the move emptied', () => {
+    const a = step(() => s().addGuest('A'));
+    const b = step(() => s().addGuest('B'));
+    const cohen = step(() => s().groupAsParty([a], 'Cohen')) as string;
+    step(() => s().groupAsParty([b], 'Levi'));
+    expect(s().parties).toHaveLength(2);
+
+    // B was the only Levi, so moving him leaves nothing behind.
+    step(() => s().addToParty([b], cohen));
+    expect(s().parties).toHaveLength(1);
+    expect(s().parties[0]?.label).toBe('Cohen');
+
+    undo();
+    expect(s().parties).toHaveLength(2);
+  });
+
+  it('addToParty ignores an unknown party and an empty selection', () => {
+    const a = step(() => s().addGuest('A'));
+    step(() => s().groupAsParty([a], 'Cohen'));
+    const before = s().guests;
+
+    step(() => s().addToParty([a], 'no-such-party'));
+    step(() => s().addToParty([], s().parties[0]?.id as string));
+    expect(s().guests).toBe(before);
+  });
+
   it('updateParty renames and undoes', () => {
     const a = step(() => s().addGuest('A'));
     const p = step(() => s().groupAsParty([a], 'Cohen'));

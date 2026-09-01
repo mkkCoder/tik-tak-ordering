@@ -41,6 +41,7 @@ export interface ProjectState extends DocSlice {
 
   // --- parties ---
   groupAsParty: (guestIds: Id[], label: string) => Id | null;
+  addToParty: (guestIds: Id[], partyId: Id) => void;
   updateParty: (id: Id, label: string) => void;
   ungroup: (guestIds: Id[]) => void;
 
@@ -160,6 +161,26 @@ export const useProjectStore = create<ProjectState>()(
           };
         });
         return party.id;
+      },
+
+      /**
+       * Move guests into a family that already exists.
+       *
+       * Without this, adding one late RSVP to the Cohens means re-selecting the
+       * whole family and grouping again — which works, but silently mints a new
+       * party and drops the old one, so any name the user typed for it is lost.
+       * Here the party id is kept, so the label survives.
+       */
+      addToParty: (guestIds, partyId) => {
+        const ids = new Set(guestIds);
+        if (ids.size === 0) return;
+        set((s) => {
+          if (!s.parties.some((p) => p.id === partyId)) return {};
+          const guests = s.guests.map((g) => (ids.has(g.id) ? { ...g, partyId } : g));
+          // Whoever was moved may have emptied the party they came from.
+          const live = new Set(guests.map((g) => g.partyId).filter(Boolean) as Id[]);
+          return { guests, parties: s.parties.filter((p) => live.has(p.id)) };
+        });
       },
 
       updateParty: (id, label) =>
