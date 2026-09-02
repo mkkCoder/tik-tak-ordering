@@ -3,32 +3,130 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Escort cards vs place cards | TIKTAK</title>
+    <title>Escort Cards vs Place Cards | TIKTAK</title>
     <meta
       name="description"
-      content="An escort card sits at the entrance and names your table. A place card sits on the table and names your chair. Which you need, what to write on them, and the mistake that puts one guest at two different tables."
+      content="Escort cards name your table at the door. Place cards name your chair. Which you need, what to write, and how to keep them in sync."
     />
     <link rel="canonical" href="https://tik-tak.online/guides/escort-cards-vs-place-cards/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#fbf9f5" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Escort cards vs place cards" />
+    <meta property="og:site_name" content="TIKTAK" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Escort Cards vs Place Cards | TIKTAK" />
     <meta
       property="og:description"
-      content="One tells a guest which table. The other tells them which chair. Here is which you need, and why making them separately puts someone at two tables at once."
+      content="One card names the table. The other names the chair. Which you need, and why printing them separately puts someone at two tables."
     />
     <meta property="og:url" content="https://tik-tak.online/guides/escort-cards-vs-place-cards/" />
     <meta property="og:image" content="https://tik-tak.online/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="TIKTAK seating chart maker — escort cards and place cards from one guest list"
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Escort Cards vs Place Cards | TIKTAK" />
+    <meta
+      name="twitter:description"
+      content="One card names the table. The other names the chair. Which you need, and how to keep them in sync."
+    />
+    <meta name="twitter:image" content="https://tik-tak.online/og.png" />
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin-full-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-tight-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Escort cards vs place cards",
-        "description": "The difference between escort cards and place cards at a wedding: where each one sits, what it says, which you need, and how to keep the two from contradicting each other.",
-        "author": { "@type": "Organization", "name": "TIKTAK" },
-        "publisher": { "@type": "Organization", "name": "TIKTAK" },
-        "mainEntityOfPage": "https://tik-tak.online/guides/escort-cards-vs-place-cards/"
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": "Escort Cards vs Place Cards",
+            "description": "The difference between escort cards and place cards at a wedding: where each one sits, what it says, which you need, and how to keep the two from contradicting each other.",
+            "author": {
+              "@type": "Organization",
+              "name": "TIKTAK",
+              "url": "https://tik-tak.online/"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "TIKTAK",
+              "url": "https://tik-tak.online/"
+            },
+            "mainEntityOfPage": "https://tik-tak.online/guides/escort-cards-vs-place-cards/",
+            "image": "https://tik-tak.online/og.png",
+            "dateModified": "2026-09-02"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "TIKTAK",
+                "item": "https://tik-tak.online/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Escort cards vs place cards",
+                "item": "https://tik-tak.online/guides/escort-cards-vs-place-cards/"
+              }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Which comes first when a guest walks in?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The escort card. It is the only one they see before they know where they are going."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use place cards without escort cards?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Only with a seating chart sign at the entrance. Place cards are invisible until you are already at the right table, so on their own they leave everyone stranded at the door."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What about a guest who does not come?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Remove the escort card before the doors open — a card left in the rack tells the whole room who did not turn up. The place card matters less; an empty setting reads as an empty setting."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many do I print?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "One escort card per guest, one place card per assigned seat. If you are printing on Avery 5302 tent stock, that is four cards a sheet."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
 
@@ -254,6 +352,36 @@
         color: var(--slate);
       }
 
+      details.faq-item {
+        border-bottom: 1px solid var(--hairline);
+        padding: 14px 0;
+      }
+
+      details.faq-item:first-of-type {
+        border-top: 1px solid var(--hairline);
+      }
+
+      details.faq-item summary {
+        cursor: pointer;
+        list-style: none;
+      }
+
+      details.faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details.faq-item summary h3 {
+        display: inline;
+        font-size: 17px;
+        font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+        margin: 0;
+      }
+
+      details.faq-item p {
+        margin: 8px 0 0;
+        color: var(--slate);
+      }
+
       footer {
         border-top: 1px solid var(--hairline);
         padding: 24px 0 48px;
@@ -277,7 +405,7 @@
     <div class="wrap">
       <header class="top">
         <a class="wordmark" href="/">TIKTAK</a>
-        <nav>
+        <nav aria-label="Guide">
           <a href="/">Seating planner</a>
           <a href="/app/">Open the planner</a>
         </nav>
@@ -288,16 +416,16 @@
       <p class="kicker">Seating guide</p>
       <h1>Escort cards vs place cards</h1>
       <p class="standfirst">
-        One tells a guest which table. The other tells them which chair. Most weddings need
-        both, and the interesting question is not what they are &mdash; it is how to stop
-        them contradicting each other.
+        One tells a guest which table. The other tells them which chair. Most weddings need both,
+        and the interesting question is not what they are &mdash; it is how to stop them
+        contradicting each other.
       </p>
 
       <h2>The difference in one line</h2>
 
       <p>
-        An <strong>escort card</strong> waits at the entrance and sends a guest to a table.
-        A <strong>place card</strong> waits on the table and sends them to a seat.
+        An <strong>escort card</strong> waits at the entrance and sends a guest to a table. A
+        <strong>place card</strong> waits on the table and sends them to a seat.
       </p>
 
       <figure>
@@ -321,12 +449,22 @@
             <path d="M138 57 132 54 132 60z" />
             <path d="M252 57 246 54 246 60z" />
           </g>
-          <g font-family="'Inter Tight', sans-serif" font-size="9" fill="#16202b" text-anchor="middle">
+          <g
+            font-family="'Inter Tight', sans-serif"
+            font-size="9"
+            fill="#16202b"
+            text-anchor="middle"
+          >
             <text x="45" y="59">Escort card</text>
             <text x="170" y="59">Table 7</text>
             <text x="295" y="59">Place card</text>
           </g>
-          <g font-family="'Inter Tight', sans-serif" font-size="8" fill="#576775" text-anchor="middle">
+          <g
+            font-family="'Inter Tight', sans-serif"
+            font-size="8"
+            fill="#576775"
+            text-anchor="middle"
+          >
             <text x="45" y="24">at the entrance</text>
             <text x="170" y="24">their table</text>
             <text x="295" y="24">at the setting</text>
@@ -335,8 +473,8 @@
           </g>
         </svg>
         <figcaption>
-          The escort card carries the table because the guest is still looking for it. The
-          place card does not, because they have already arrived.
+          The escort card carries the table because the guest is still looking for it. The place
+          card does not, because they have already arrived.
         </figcaption>
       </figure>
 
@@ -382,17 +520,17 @@
       <h2>Do you need both?</h2>
 
       <p>
-        If you assign tables, you need something at the door &mdash; escort cards or a large
-        seating chart sign. Without it, 150 people stand in the entrance reading a list over
-        each other's shoulders.
+        If you assign tables, you need something at the door &mdash; escort cards or a large seating
+        chart sign. Without it, 150 people stand in the entrance reading a list over each other's
+        shoulders.
       </p>
 
       <p>
         Place cards are the second decision, and a smaller one: they only matter if you are
-        assigning specific <em>seats</em> rather than just tables. Assign seats when there is
-        a plated dinner with meal choices, when the table has people who should not be
-        opposite each other, or when a table of ten would otherwise leave one person taking
-        whatever chair is left. Otherwise, let the table sort itself out.
+        assigning specific <em>seats</em> rather than just tables. Assign seats when there is a
+        plated dinner with meal choices, when the table has people who should not be opposite each
+        other, or when a table of ten would otherwise leave one person taking whatever chair is
+        left. Otherwise, let the table sort itself out.
       </p>
 
       <p>A seating chart sign replaces escort cards. It does not replace place cards.</p>
@@ -401,12 +539,12 @@
 
       <ul>
         <li>
-          <strong>Formal:</strong> titles and surname &mdash; "Mr Baker" &mdash; unless two
-          guests would then read the same, which at a wedding they usually would.
+          <strong>Formal:</strong> titles and surname &mdash; "Mr Baker" &mdash; unless two guests
+          would then read the same, which at a wedding they usually would.
         </li>
         <li>
-          <strong>Everything else:</strong> first and last name, matching how you addressed
-          the invitation.
+          <strong>Everything else:</strong> first and last name, matching how you addressed the
+          invitation.
         </li>
         <li>
           <strong>Couples:</strong> one escort card between them is fine if they are seated
@@ -415,75 +553,75 @@
       </ul>
 
       <p>
-        Alphabetise escort cards by <em>surname</em>. It is how a guest searches for their
-        own name in a rack of two hundred, and sorting by first name is the single most
-        common way to make that rack unusable.
+        Alphabetise escort cards by <em>surname</em>. It is how a guest searches for their own name
+        in a rack of two hundred, and sorting by first name is the single most common way to make
+        that rack unusable.
       </p>
 
       <h2>The mistake that costs an evening</h2>
 
       <div class="warn">
         <strong>Made separately, the two sets drift apart.</strong>
-        The escort cards get printed on Tuesday. On Thursday someone cancels, a table is
-        rebalanced, and the place cards are printed from the corrected list. Now one guest
-        is at table 4 on the door and table 7 on the plate, and nobody finds out until they
-        are standing there holding a card.
+        The escort cards get printed on Tuesday. On Thursday someone cancels, a table is rebalanced,
+        and the place cards are printed from the corrected list. Now one guest is at table 4 on the
+        door and table 7 on the plate, and nobody finds out until they are standing there holding a
+        card.
       </div>
 
       <p>
-        This is not carelessness &mdash; it is what happens whenever the same information is
-        typed twice. The fix is not to be more careful. It is to generate both sets from one
-        plan, so they cannot disagree.
+        This is not carelessness &mdash; it is what happens whenever the same information is typed
+        twice. The fix is not to be more careful. It is to generate both sets from one plan, so they
+        cannot disagree.
       </p>
 
       <div class="offer">
         <h3 style="margin-top: 0">Print both from the same guest list</h3>
         <p>
-          TIKTAK builds escort cards and place cards from one seating plan. Escort cards come
-          out alphabetically by surname for the table at the door; place cards come out
-          grouped by table in seat order, so you can carry a stack to each table and lay them
-          down in a circle. Change the plan and both change with it.
+          TIKTAK builds escort cards and place cards from one seating plan. Escort cards come out
+          alphabetically by surname for the table at the door; place cards come out grouped by table
+          in seat order, so you can carry a stack to each table and lay them down in a circle.
+          Change the plan and both change with it.
         </p>
         <p>
-          Planning is free. The printable cards are $19 once, and nothing you type ever
-          leaves your device.
+          Planning is free. The printable cards are $19 once, and nothing you type ever leaves your
+          device.
         </p>
         <a class="cta" href="/app/">Open the planner</a>
       </div>
 
       <h2>Questions people ask</h2>
 
-      <dl>
-        <dt>Which comes first when a guest walks in?</dt>
-        <dd>
-          The escort card. It is the only one they see before they know where they are going.
-        </dd>
-
-        <dt>Can I use place cards without escort cards?</dt>
-        <dd>
-          Only with a seating chart sign at the entrance. Place cards are invisible until you
-          are already at the right table, so on their own they leave everyone stranded at the
-          door.
-        </dd>
-
-        <dt>What about a guest who does not come?</dt>
-        <dd>
-          Remove the escort card before the doors open &mdash; a card left in the rack tells
-          the whole room who did not turn up. The place card matters less; an empty setting
-          reads as an empty setting.
-        </dd>
-
-        <dt>How many do I print?</dt>
-        <dd>
-          One escort card per guest, one place card per assigned seat. If you are printing on
-          Avery 5302 tent stock, that is four cards a sheet &mdash; see the
+      <details class="faq-item" open>
+        <summary><h3>Which comes first when a guest walks in?</h3></summary>
+        <p>The escort card. It is the only one they see before they know where they are going.</p>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Can I use place cards without escort cards?</h3></summary>
+        <p>
+          Only with a seating chart sign at the entrance. Place cards are invisible until you are
+          already at the right table, so on their own they leave everyone stranded at the door.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary><h3>What about a guest who does not come?</h3></summary>
+        <p>
+          Remove the escort card before the doors open &mdash; a card left in the rack tells the
+          whole room who did not turn up. The place card matters less; an empty setting reads as an
+          empty setting.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary><h3>How many do I print?</h3></summary>
+        <p>
+          One escort card per guest, one place card per assigned seat. If you are printing on Avery
+          5302 tent stock, that is four cards a sheet &mdash; see the
           <a href="/guides/avery-5302-place-card-template/">Avery 5302 measurements</a>.
-        </dd>
-      </dl>
+        </p>
+      </details>
 
       <p style="margin-top: 40px; color: var(--slate); font-size: 15px">
-        Conventions here follow standard wedding-stationery practice; where sources differ,
-        the version that survives contact with 150 guests at a door is the one described.
+        Conventions here follow standard wedding-stationery practice; where sources differ, the
+        version that survives contact with 150 guests at a door is the one described.
       </p>
     </article>
 

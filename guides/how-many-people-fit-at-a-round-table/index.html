@@ -3,38 +3,136 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>How many people fit at a 60-inch round table? | TIKTAK</title>
+    <title>How many people fit at a 60-inch round table?</title>
     <meta
       name="description"
-      content="Eight comfortably, ten if you squeeze. The arithmetic behind it, a table of every common diameter, what ten actually feels like in inches of elbow room, and how much floor space to leave between tables."
+      content="A 60-inch round table seats eight comfortably or ten squeezed. Capacities by diameter, elbow room, and floor space between tables."
     />
     <link
       rel="canonical"
       href="https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#fbf9f5" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="TIKTAK" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="How many people fit at a 60-inch round table?" />
     <meta
       property="og:description"
-      content="Eight comfortably, ten if you squeeze - and the one calculation that answers it for any table size."
+      content="Eight comfortably, ten if you squeeze — and the calculation that answers it for any table size."
     />
     <meta
       property="og:url"
       content="https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
     />
     <meta property="og:image" content="https://tik-tak.online/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="TIKTAK seating chart with round banquet tables drawn to scale"
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How many people fit at a 60-inch round table?" />
+    <meta
+      name="twitter:description"
+      content="Eight comfortably, ten if you squeeze — capacities by diameter, elbow room, and aisle space."
+    />
+    <meta name="twitter:image" content="https://tik-tak.online/og.png" />
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin-full-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-tight-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "How many people fit at a 60-inch round table?",
-        "description": "The seating capacity of round banquet tables by diameter, the arithmetic behind the numbers, and how much space each guest actually gets when you add one more chair.",
-        "author": { "@type": "Organization", "name": "TIKTAK" },
-        "publisher": { "@type": "Organization", "name": "TIKTAK" },
-        "mainEntityOfPage": "https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": "How many people fit at a 60-inch round table?",
+            "description": "The seating capacity of round banquet tables by diameter, the arithmetic behind the numbers, and how much space each guest gets when you add one more chair.",
+            "author": {
+              "@type": "Organization",
+              "name": "TIKTAK",
+              "url": "https://tik-tak.online/"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "TIKTAK",
+              "url": "https://tik-tak.online/"
+            },
+            "mainEntityOfPage": "https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/",
+            "image": "https://tik-tak.online/og.png",
+            "dateModified": "2026-09-02"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "TIKTAK",
+                "item": "https://tik-tak.online/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "How many people fit at a round table",
+                "item": "https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/"
+              }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can a 60-inch table seat 12?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Physically yes, at 15.7 inches each — narrower than a dining chair. Nobody will eat comfortably. Use a 72-inch table instead."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many 60-inch tables do I need for 150 guests?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Nineteen at eight per table, or fifteen at ten. Add one for anyone you have forgotten, because you have forgotten someone."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the head table follow the same rule?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A head table seats on one side only, so it needs about 24 inches of length per person rather than per edge — a 12-foot head table takes six."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What about children?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Two children fit where one adult would at the squeeze, but only if they are at the same table and small. Planning them as adults and being pleasantly surprised beats the reverse."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
 
@@ -260,6 +358,36 @@
         color: var(--slate);
       }
 
+      details.faq-item {
+        border-bottom: 1px solid var(--hairline);
+        padding: 14px 0;
+      }
+
+      details.faq-item:first-of-type {
+        border-top: 1px solid var(--hairline);
+      }
+
+      details.faq-item summary {
+        cursor: pointer;
+        list-style: none;
+      }
+
+      details.faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details.faq-item summary h3 {
+        display: inline;
+        font-size: 17px;
+        font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+        margin: 0;
+      }
+
+      details.faq-item p {
+        margin: 8px 0 0;
+        color: var(--slate);
+      }
+
       footer {
         border-top: 1px solid var(--hairline);
         padding: 24px 0 48px;
@@ -283,7 +411,7 @@
     <div class="wrap">
       <header class="top">
         <a class="wordmark" href="/">TIKTAK</a>
-        <nav>
+        <nav aria-label="Guide">
           <a href="/">Seating planner</a>
           <a href="/app/">Open the planner</a>
         </nav>
@@ -294,18 +422,17 @@
       <p class="kicker">Seating guide</p>
       <h1>How many people fit at a 60-inch round table?</h1>
       <p class="standfirst">
-        Eight comfortably. Ten if you squeeze, and everyone will know it. Here is the
-        arithmetic that gives you the answer for any table size, and what the tenth chair
-        actually costs.
+        Eight comfortably. Ten if you squeeze, and everyone will know it. Here is the arithmetic
+        that gives you the answer for any table size, and what the tenth chair actually costs.
       </p>
 
       <h2>The short answer</h2>
 
       <p>
         A 60-inch round table seats <strong>eight</strong> guests with room to eat, and
-        <strong>ten</strong> if you are short of space and willing to trade elbow room for
-        it. Caterers and rental companies quote eight; wedding venues quote ten because it
-        lets them sell the room to more people.
+        <strong>ten</strong> if you are short of space and willing to trade elbow room for it.
+        Caterers and rental companies quote eight; wedding venues quote ten because it lets them
+        sell the room to more people.
       </p>
 
       <p>Both numbers are right. They are answers to different questions.</p>
@@ -313,16 +440,15 @@
       <h2>Where the number comes from</h2>
 
       <p>
-        Guests sit around the edge, so what matters is the circumference, not the area. A
-        person needs roughly <strong>24 inches</strong> of table edge &mdash; enough for a
-        place setting and two elbows. That gives one calculation that works for every table:
+        Guests sit around the edge, so what matters is the circumference, not the area. A person
+        needs roughly <strong>24 inches</strong> of table edge &mdash; enough for a place setting
+        and two elbows. That gives one calculation that works for every table:
       </p>
 
       <div class="warn" style="border-left-color: var(--sage); background: rgba(78, 107, 87, 0.06)">
         <strong>Seats = (diameter &times; 3.14) &divide; 24 inches</strong>
-        For a 60-inch table: 60 &times; 3.14 = 188 inches of edge, divided by 24, is 7.85
-        &mdash; so eight chairs, and the arithmetic is telling you the eighth is already
-        snug.
+        For a 60-inch table: 60 &times; 3.14 = 188 inches of edge, divided by 24, is 7.85 &mdash; so
+        eight chairs, and the arithmetic is telling you the eighth is already snug.
       </div>
 
       <h2>Every common size</h2>
@@ -338,25 +464,45 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>36 in (3 ft)</td><td>113 in</td><td>4</td><td>5</td></tr>
-            <tr><td>48 in (4 ft)</td><td>151 in</td><td>6</td><td>8</td></tr>
-            <tr><td>60 in (5 ft)</td><td>188 in</td><td>8</td><td>10</td></tr>
-            <tr><td>72 in (6 ft)</td><td>226 in</td><td>10</td><td>12</td></tr>
+            <tr>
+              <td>36 in (3 ft)</td>
+              <td>113 in</td>
+              <td>4</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>48 in (4 ft)</td>
+              <td>151 in</td>
+              <td>6</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <td>60 in (5 ft)</td>
+              <td>188 in</td>
+              <td>8</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>72 in (6 ft)</td>
+              <td>226 in</td>
+              <td>10</td>
+              <td>12</td>
+            </tr>
           </tbody>
         </table>
       </div>
 
       <p>
-        These match what rental suppliers publish, which is a good sign: the formula is not
-        a theory, it is the same arithmetic the industry already runs.
+        These match what rental suppliers publish, which is a good sign: the formula is not a
+        theory, it is the same arithmetic the industry already runs.
       </p>
 
       <h2>What the tenth chair costs</h2>
 
       <p>
-        Put ten people at a 60-inch table and each one gets 18.8 inches of edge instead of
-        23.6. That is the difference between a comfortable place setting and one where the
-        water glasses touch and someone has to lean back so their neighbour can cut.
+        Put ten people at a 60-inch table and each one gets 18.8 inches of edge instead of 23.6.
+        That is the difference between a comfortable place setting and one where the water glasses
+        touch and someone has to lean back so their neighbour can cut.
       </p>
 
       <p>It is worth it when:</p>
@@ -379,76 +525,77 @@
 
       <p>
         Fitting guests <em>at</em> tables is only half of it. Tables also need space
-        <em>between</em> them: two chairs backing onto each other take about 18 inches each,
-        and a person carrying two plates needs roughly two feet to pass between them. That
-        comes to about <strong>five feet from table edge to table edge</strong> &mdash; and
-        it is the number people forget when they work out how many tables a room holds.
+        <em>between</em> them: two chairs backing onto each other take about 18 inches each, and a
+        person carrying two plates needs roughly two feet to pass between them. That comes to about
+        <strong>five feet from table edge to table edge</strong> &mdash; and it is the number people
+        forget when they work out how many tables a room holds.
       </p>
 
       <p>
-        A 60-inch table therefore occupies a circle roughly 10 feet across once you include
-        its chairs and the walkway around it, not 5 feet.
+        A 60-inch table therefore occupies a circle roughly 10 feet across once you include its
+        chairs and the walkway around it, not 5 feet.
       </p>
 
       <h2>Round or rectangular?</h2>
 
       <p>
-        A 6-foot banquet table (30 &times; 72 inches) seats six to eight, and an 8-foot one
-        seats eight to ten &mdash; similar numbers per table, but the two shapes behave
-        differently. Round tables let everyone see everyone, which is why they dominate
-        weddings. Long tables fit more people into a narrow room and look better in
-        photographs, but a guest can only really talk to four people all evening.
+        A 6-foot banquet table (30 &times; 72 inches) seats six to eight, and an 8-foot one seats
+        eight to ten &mdash; similar numbers per table, but the two shapes behave differently. Round
+        tables let everyone see everyone, which is why they dominate weddings. Long tables fit more
+        people into a narrow room and look better in photographs, but a guest can only really talk
+        to four people all evening.
       </p>
 
       <div class="offer">
         <h3 style="margin-top: 0">Let the plan do the arithmetic</h3>
         <p>
-          TIKTAK draws every table at its true size. Set a round table to eight seats and it
-          is drawn as a 60-inch table; set it to ten and the circle grows, because it has to
-          &mdash; the app allows 60&nbsp;cm of edge per guest, which is the 24-inch rule in
-          metric. So the floor plan you are looking at is the floor plan you will actually
-          have.
+          TIKTAK draws every table at its true size. Set a round table to eight seats and it is
+          drawn as a 60-inch table; set it to ten and the circle grows, because it has to &mdash;
+          the app allows 60&nbsp;cm of edge per guest, which is the 24-inch rule in metric. So the
+          floor plan you are looking at is the floor plan you will actually have.
         </p>
         <p>
-          Paste your guest list, drag people onto tables, and print the chart. Planning is
-          free and nothing you type ever leaves your device.
+          Paste your guest list, drag people onto tables, and print the chart. Planning is free and
+          nothing you type ever leaves your device.
         </p>
         <a class="cta" href="/app/">Open the planner</a>
       </div>
 
       <h2>Questions people ask</h2>
 
-      <dl>
-        <dt>Can a 60-inch table seat 12?</dt>
-        <dd>
-          Physically yes, at 15.7 inches each &mdash; narrower than a dining chair. Nobody
-          will eat comfortably. Use a 72-inch table instead.
-        </dd>
-
-        <dt>How many 60-inch tables do I need for 150 guests?</dt>
-        <dd>
-          Nineteen at eight per table, or fifteen at ten. Add one for anyone you have
-          forgotten, because you have forgotten someone.
-        </dd>
-
-        <dt>Does the head table follow the same rule?</dt>
-        <dd>
-          No. A head table seats on one side only, so it needs about 24 inches of length per
-          person rather than per edge &mdash; a 12-foot head table takes six.
-        </dd>
-
-        <dt>What about children?</dt>
-        <dd>
-          Two children fit where one adult would at the squeeze, but only if they are at the
-          same table and small. Planning them as adults and being pleasantly surprised beats
-          the reverse.
-        </dd>
-      </dl>
+      <details class="faq-item" open>
+        <summary><h3>Can a 60-inch table seat 12?</h3></summary>
+        <p>
+          Physically yes, at 15.7 inches each &mdash; narrower than a dining chair. Nobody will eat
+          comfortably. Use a 72-inch table instead.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary><h3>How many 60-inch tables do I need for 150 guests?</h3></summary>
+        <p>
+          Nineteen at eight per table, or fifteen at ten. Add one for anyone you have forgotten,
+          because you have forgotten someone.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary><h3>Does the head table follow the same rule?</h3></summary>
+        <p>
+          No. A head table seats on one side only, so it needs about 24 inches of length per person
+          rather than per edge &mdash; a 12-foot head table takes six.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary><h3>What about children?</h3></summary>
+        <p>
+          Two children fit where one adult would at the squeeze, but only if they are at the same
+          table and small. Planning them as adults and being pleasantly surprised beats the reverse.
+        </p>
+      </details>
 
       <p style="margin-top: 40px; color: var(--slate); font-size: 15px">
-        Capacities cross-checked against published banquet-table guidance from rental
-        suppliers; the arithmetic is circumference divided by 24 inches per guest, which is
-        the same figure TIKTAK uses internally as 60&nbsp;cm.
+        Capacities cross-checked against published banquet-table guidance from rental suppliers; the
+        arithmetic is circumference divided by 24 inches per guest, which is the same figure TIKTAK
+        uses internally as 60&nbsp;cm.
       </p>
     </article>
 

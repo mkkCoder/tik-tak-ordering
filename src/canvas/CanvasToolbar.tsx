@@ -31,7 +31,13 @@ export function CanvasToolbar({
       <div className="pointer-events-auto flex items-center gap-1 rounded-[4px] border border-[color:var(--hairline)] bg-linen/95 p-1 shadow-lift backdrop-blur">
         <span className="px-2 text-micro text-slate">Round</span>
         {ROUND_SIZES.map((seats) => (
-          <Button key={seats} size="sm" onClick={() => add('round', seats)} title={`Round table, ${seats} seats`}>
+          <Button
+            key={seats}
+            size="sm"
+            onClick={() => add('round', seats)}
+            aria-label={`Add a round table with ${seats} seats`}
+            title={`Round table, ${seats} seats`}
+          >
             {seats}
           </Button>
         ))}
@@ -58,7 +64,7 @@ export function CanvasToolbar({
         <button
           type="button"
           onClick={onFit}
-          title="Fit the plan to the window"
+          aria-label="Fit the seating chart to the window"
           className={cx(
             'h-7 min-w-[3.25rem] rounded-[3px] text-[12px] text-slate',
             'hover:bg-[color:rgba(22,32,43,0.07)] hover:text-ink',

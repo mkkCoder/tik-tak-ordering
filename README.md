@@ -42,6 +42,7 @@ First-time setup:
 
    If the push is rejected because the repository was created with a README,
    rebase onto it once: `git pull --rebase origin main`, then push again.
+
 1. **Repository settings → Pages → Source → GitHub Actions.**
 2. **DNS at the registrar.** For an apex domain, four A records:
 
@@ -56,12 +57,31 @@ First-time setup:
    (Add the AAAA records too if the registrar supports them.) Then, in Pages,
    set the custom domain to `tik-tak.online` and tick **Enforce HTTPS** once the
    certificate has been issued — that can take up to an hour.
+
 3. Nothing else. `public/.nojekyll` is already there, which stops Pages from
    swallowing the hashed asset filenames.
 
 If the site ever moves to a project subpath (`<user>.github.io/<repo>/`), set a
 repository variable `VITE_BASE` to `/<repo>/` and delete `public/CNAME`. Every
 asset URL is base-aware, so nothing else needs touching.
+
+### Indexing (manual)
+
+The marketing pages are real HTML files, so GitHub Pages returns HTTP 200 for
+`/`, `/app/`, and each `/guides/.../` directory. Unknown paths hit
+`public/404.html` with a real 404 — do not replace that file with the app shell.
+
+After HTTPS is on, finish search setup by hand:
+
+1. [Google Search Console](https://search.google.com/search-console) → Add
+   property → URL prefix `https://tik-tak.online/`.
+2. Verify with a DNS TXT record at the registrar (prefer that over an HTML file
+   in the repo, so a rebuild cannot knock verification out).
+3. Submit `https://tik-tak.online/sitemap.xml`.
+4. Request indexing of `/` and the three guides.
+5. Confirm `www.tik-tak.online` 301s to the apex (the www CNAME plus Pages
+   HTTPS usually does this). Only the canonical host should be indexed.
+6. Optional: Bing Webmaster Tools, same sitemap.
 
 ## Payments
 
@@ -72,7 +92,7 @@ Pro is a one-time $19 licence key, validated from the browser.
   needs a `productId`.
 - Both vendors were checked for cross-origin access from a browser and both
   allow it, so no proxy is needed.
-- Both answer a bad key with HTTP 404 *and* a JSON body — the client reads the
+- Both answer a bad key with HTTP 404 _and_ a JSON body — the client reads the
   body and never trusts the status code alone.
 - Set the real checkout URL in `src/license/LicenseDialog.tsx` (`BUY_URL`).
 

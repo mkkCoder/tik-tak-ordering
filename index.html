@@ -3,23 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TIKTAK — wedding seating chart maker and event seating planner</title>
+    <title>Free Wedding Seating Chart Maker | TIKTAK</title>
     <meta
       name="description"
-      content="Free event seating planner. Import your guest list, drag guests onto tables, mark who can't sit together, and print a seating chart. Everything stays in your browser."
+      content="Free wedding seating chart maker. Import guests, drag tables, set who can't sit together, and print charts plus place cards. Runs in your browser."
     />
     <link rel="canonical" href="https://tik-tak.online/" />
+    <link rel="sitemap" type="application/xml" href="https://tik-tak.online/sitemap.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#fbf9f5" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="application-name" content="TIKTAK" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="TIKTAK — seat 200 guests without a spreadsheet" />
+    <meta property="og:site_name" content="TIKTAK" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Seat 200 guests without a spreadsheet" />
     <meta
       property="og:description"
-      content="Drag guests onto tables, mark who can't sit together, print the chart. Nothing leaves your browser."
+      content="Free wedding seating chart maker. Drag guests onto tables, mark who can't sit together, print the chart. Nothing leaves your browser."
     />
     <meta property="og:url" content="https://tik-tak.online/" />
     <meta property="og:image" content="https://tik-tak.online/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="TIKTAK wedding seating chart maker showing round tables on a floor plan"
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seat 200 guests without a spreadsheet" />
+    <meta
+      name="twitter:description"
+      content="Free wedding seating chart maker. Drag guests onto tables, print the chart. Nothing leaves your browser."
+    />
+    <meta name="twitter:image" content="https://tik-tak.online/og.png" />
+    <meta
+      name="twitter:image:alt"
+      content="TIKTAK wedding seating chart maker showing round tables on a floor plan"
+    />
 
     <link
       rel="preload"
@@ -39,35 +62,129 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "TIKTAK",
-        "applicationCategory": "BusinessApplication",
-        "applicationSubCategory": "Event seating planner",
-        "operatingSystem": "Any modern web browser",
-        "url": "https://tik-tak.online/",
-        "description": "Event seating planner that runs entirely in your browser. Import a guest list, arrange tables, set seating constraints and print a seating chart.",
-        "offers": [
+        "@graph": [
           {
-            "@type": "Offer",
-            "name": "Free",
-            "price": "0",
-            "priceCurrency": "USD",
-            "description": "Unlimited guests and tables, import, constraints, auto-arrange and CSV export."
+            "@type": "WebSite",
+            "@id": "https://tik-tak.online/#website",
+            "url": "https://tik-tak.online/",
+            "name": "TIKTAK",
+            "description": "Free wedding seating chart maker and event seating planner that runs in the browser.",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://tik-tak.online/#app" }
           },
           {
-            "@type": "Offer",
-            "name": "Pro",
-            "price": "19",
-            "priceCurrency": "USD",
-            "description": "One-time payment for clean PDF exports and printable place cards."
+            "@type": ["SoftwareApplication", "WebApplication"],
+            "@id": "https://tik-tak.online/#app",
+            "name": "TIKTAK",
+            "alternateName": "TIKTAK seating chart maker",
+            "applicationCategory": "BusinessApplication",
+            "applicationSubCategory": "Wedding seating chart maker",
+            "operatingSystem": "Web browser",
+            "browserRequirements": "Requires JavaScript. Works in any modern browser.",
+            "url": "https://tik-tak.online/",
+            "image": "https://tik-tak.online/og.png",
+            "screenshot": [
+              "https://tik-tak.online/shots/import.png",
+              "https://tik-tak.online/shots/constraints.png",
+              "https://tik-tak.online/shots/print.png"
+            ],
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Free wedding seating chart maker. Import a guest list, arrange tables, set who cannot sit together, auto-arrange seats, and print a seating chart, escort cards, and place cards. Guest lists stay on the device.",
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "Free",
+                "price": "0",
+                "priceCurrency": "USD",
+                "priceValidUntil": "2027-12-31",
+                "availability": "https://schema.org/InStock",
+                "url": "https://tik-tak.online/app/",
+                "description": "Unlimited guests and tables, spreadsheet import, seating constraints, auto-arrange and CSV export."
+              },
+              {
+                "@type": "Offer",
+                "name": "Pro",
+                "price": "19",
+                "priceCurrency": "USD",
+                "priceValidUntil": "2027-12-31",
+                "availability": "https://schema.org/InStock",
+                "url": "https://tik-tak.online/app/",
+                "description": "One-time payment, not a subscription, for watermark-free PDFs, place cards, escort cards and the full guest list."
+              }
+            ],
+            "featureList": [
+              "Spreadsheet guest list import",
+              "Drag and drop wedding seating chart",
+              "Must-sit-with and must-not-sit-with rules",
+              "Automatic seating arrangement",
+              "Printable seating chart, escort cards and place cards",
+              "Runs entirely in the browser with no account"
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://tik-tak.online/#faq",
+            "url": "https://tik-tak.online/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Where is my guest list stored?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "In your browser, on your own device. There is no account and no server to send it to — TIKTAK has no database at all. The only network requests it ever makes are a licence check when you activate Pro, and a privacy-friendly page counter."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens if I clear my browser?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You lose the plan, the same way you would lose an unsaved document. Use Project → Export project file to save a copy you can keep. That file is the backup."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I work from two computers?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, through the project file: export it on one machine, open it on the other. There is no live sync, because that would need the server TIKTAK deliberately does not have."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is this a subscription?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. $19 once, for good. Planning — guests, tables, constraints, auto-arrange and CSV export — is free and unlimited whether you ever pay or not."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What exactly do I get for the $19?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The things you print and hand out: place cards for every seat, escort cards for the entrance, the complete A–Z guest list, and a chart with no watermark. The floor plan and the per-table lists are free either way."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many guests can it handle?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Unlimited on both tiers. It is built and tested against a thousand guests, which is well past the point where most venues run out of room."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it work on a phone?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You can view a plan and export from a phone. Arranging a room really wants a bigger screen, so on a small one TIKTAK opens read-only rather than pretending otherwise."
+                }
+              }
+            ]
           }
-        ],
-        "featureList": [
-          "Spreadsheet guest list import",
-          "Drag and drop table plan",
-          "Seating constraints",
-          "Automatic seating arrangement",
-          "Printable seating chart and place cards"
         ]
       }
     </script>
@@ -294,21 +411,55 @@
         max-width: 46ch;
       }
 
-      .faq dl {
+      .faq .accordion {
         margin: 0;
         display: grid;
-        gap: 22px;
+        gap: 0;
         max-width: 68ch;
       }
 
-      .faq dt {
-        font-weight: 600;
-        margin-bottom: 4px;
+      .faq details {
+        border-bottom: 1px solid var(--hairline);
+        padding: 14px 0;
       }
 
-      .faq dd {
-        margin: 0;
+      .faq summary {
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq summary h3 {
+        font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0;
+        display: inline;
+      }
+
+      .faq details p {
+        margin: 8px 0 0;
         color: var(--slate);
+      }
+
+      .skip {
+        position: absolute;
+        left: 12px;
+        top: 8px;
+        z-index: 20;
+        padding: 8px 12px;
+        background: var(--ink);
+        color: var(--paper);
+        text-decoration: none;
+        border-radius: 3px;
+        transform: translateY(-200%);
+      }
+
+      .skip:focus {
+        transform: none;
       }
 
       footer {
@@ -350,187 +501,227 @@
   </head>
 
   <body>
+    <a class="skip" href="#main">Skip to seating chart maker</a>
     <div class="wrap">
       <header class="top">
         <span class="wordmark">TIKTAK</span>
-        <nav>
+        <nav aria-label="Landing">
           <a href="#how">How it works</a>
+          <a href="#use-cases">Who it's for</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">Questions</a>
         </nav>
       </header>
-
     </div>
 
-    <main>
+    <main id="main">
       <div class="wrap">
         <div class="hero">
-        <div>
-          <h1>Seat 200 guests without a spreadsheet.</h1>
-          <p class="sub">
-            Drag guests onto tables, mark who can&rsquo;t sit together, print the chart and the
-            place cards. Nothing leaves your browser.
-          </p>
-          <a class="cta" href="/app/">Open the planner</a>
-          <p class="note">No signup, no email. Free to plan.</p>
-        </div>
+          <div>
+            <h1>Free wedding seating chart maker</h1>
+            <p class="sub">
+              Seat 200 guests without a spreadsheet. Drag people onto tables, mark who can&rsquo;t
+              sit together, print the chart and the place cards. Nothing leaves your browser.
+            </p>
+            <a class="cta" href="/app/">Open the free seating planner</a>
+            <p class="note">No signup, no email. Unlimited guests on the free plan.</p>
+          </div>
 
-        <figure class="hero-figure" id="hero" style="margin: 0">
-          <!-- Painted from the HTML itself: no JavaScript, no layout shift.
+          <figure class="hero-figure" id="hero" style="margin: 0">
+            <!-- Painted from the HTML itself: no JavaScript, no layout shift.
                Replaced by the real, draggable planner canvas once it loads. -->
-          <svg viewBox="0 0 400 300" role="img" aria-label="A seating plan with seven tables, most seats taken">
-            <rect width="400" height="300" fill="var(--paper)" />
-            <g stroke="var(--slate)" stroke-opacity="0.16" stroke-width="1">
-              <path d="M0 50h400M0 100h400M0 150h400M0 200h400M0 250h400" />
-              <path d="M50 0v300M100 0v300M150 0v300M200 0v300M250 0v300M300 0v300M350 0v300" />
-            </g>
-            <g id="hero-tables"></g>
-          </svg>
-          <figcaption id="hero-caption">
-            A real plan &mdash; it becomes draggable once the page finishes loading.
-          </figcaption>
+            <svg
+              viewBox="0 0 400 300"
+              role="img"
+              aria-label="Wedding seating chart with seven round tables, most seats filled"
+            >
+              <rect width="400" height="300" fill="var(--paper)" />
+              <g stroke="var(--slate)" stroke-opacity="0.16" stroke-width="1">
+                <path d="M0 50h400M0 100h400M0 150h400M0 200h400M0 250h400" />
+                <path d="M50 0v300M100 0v300M150 0v300M200 0v300M250 0v300M300 0v300M350 0v300" />
+              </g>
+              <g id="hero-tables"></g>
+            </svg>
+            <figcaption id="hero-caption">
+              A real plan &mdash; it becomes draggable once the page finishes loading.
+            </figcaption>
           </figure>
         </div>
       </div>
 
-    <section id="how">
-      <div class="wrap">
-        <h2>Three steps, one afternoon</h2>
-        <p class="lede">
-          The whole job is getting a list of names into a shape you can hang by the door. TIKTAK
-          does that and stops.
-        </p>
-        <div class="blocks">
-          <div class="block">
-            <img
-              src="/shots/import.png"
-              width="640"
-              height="400"
-              loading="lazy"
-              decoding="async"
-              alt="The import screen, showing spreadsheet columns being matched to name, party and seats"
-            />
-            <h3>Paste your spreadsheet</h3>
-            <p>
-              Copy the columns straight out of Excel or Google Sheets. TIKTAK works out which
-              column is which, expands &ldquo;Cohen, 4&rdquo; into four guests, and flags anyone
-              listed twice.
-            </p>
-          </div>
-          <div class="block">
-            <img
-              src="/shots/constraints.png"
-              width="640"
-              height="400"
-              loading="lazy"
-              decoding="async"
-              alt="The floor plan with one table outlined in red because two guests who must not sit together are seated at it"
-            />
-            <h3>Say who can&rsquo;t sit together</h3>
-            <p>
-              Two rules — must sit with, must not sit with. A table that breaks one turns red the
-              moment it does, so you find out while you are looking at it.
-            </p>
-          </div>
-          <div class="block">
-            <img
-              src="/shots/print.png"
-              width="640"
-              height="400"
-              loading="lazy"
-              decoding="async"
-              alt="A printed seating chart: floor plan, per-table lists and an alphabetical guest index"
-            />
-            <h3>Print the chart</h3>
-            <p>
-              A floor plan, a list for every table, and an alphabetical index of every guest with
-              their table number. Real text in a real PDF, sharp at any size.
-            </p>
+      <section id="how">
+        <div class="wrap">
+          <h2>How the seating chart maker works</h2>
+          <p class="lede">
+            The whole job is getting a list of names into a shape you can hang by the door. TIKTAK
+            does that and stops: import guests, arrange tables, print the chart.
+          </p>
+          <div class="blocks">
+            <div class="block">
+              <img
+                src="/shots/import.png"
+                width="640"
+                height="400"
+                loading="lazy"
+                decoding="async"
+                alt="Wedding guest list import: spreadsheet columns mapped to name, party and seats in the seating chart maker"
+              />
+              <h3>Import your guest list</h3>
+              <p>
+                Copy the columns straight out of Excel or Google Sheets. TIKTAK works out which
+                column is which, expands &ldquo;Cohen, 4&rdquo; into four guests, and flags anyone
+                listed twice.
+              </p>
+            </div>
+            <div class="block">
+              <img
+                src="/shots/constraints.png"
+                width="640"
+                height="400"
+                loading="lazy"
+                decoding="async"
+                alt="Wedding seating chart with a table highlighted in red because two guests who must not sit together were seated there"
+              />
+              <h3>Say who can&rsquo;t sit together</h3>
+              <p>
+                Two rules — must sit with, must not sit with. A table that breaks one turns red the
+                moment it does, so you find out while you are looking at it.
+              </p>
+            </div>
+            <div class="block">
+              <img
+                src="/shots/print.png"
+                width="640"
+                height="400"
+                loading="lazy"
+                decoding="async"
+                alt="Printed wedding seating chart: floor plan, per-table guest lists and an alphabetical guest index"
+              />
+              <h3>Print the seating chart</h3>
+              <p>
+                A floor plan, a list for every table, and an alphabetical index of every guest with
+                their table number. Real text in a real PDF, sharp at any size.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="pricing" id="pricing">
-      <div class="wrap">
-        <h2>Pricing</h2>
-        <p class="line">
-          Planning is free, forever. $19 once — not a subscription — for everything you print:
-          place cards, escort cards, and the full guest list for the door.
-        </p>
-      </div>
-    </section>
+      <section id="use-cases">
+        <div class="wrap">
+          <h2>Who the seating chart maker is for</h2>
+          <p class="lede">
+            Same job every time: a list of people, a room of tables, and a printout that does not
+            argue with itself. The event around it can be anything.
+          </p>
+          <div class="blocks">
+            <div class="block">
+              <h3>Wedding seating charts</h3>
+              <p>
+                Import the RSVP list, keep families together, keep the two cousins apart, and print
+                the chart for the door plus place cards for every seat. Built for 150-person rooms
+                and 400-person ones alike.
+              </p>
+            </div>
+            <div class="block">
+              <h3>Corporate dinners and galas</h3>
+              <p>
+                Seat sponsors with hosts, keep competing tables from colliding, and export a CSV the
+                venue can actually use. No account for the office IT policy to argue with.
+              </p>
+            </div>
+            <div class="block">
+              <h3>Family events and celebrations</h3>
+              <p>
+                Bar mitzvahs, reunions, milestone birthdays. Unlimited guests on the free plan, so
+                you are not paying per head to move Aunt Ruth one seat to the left.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <section class="faq" id="faq">
-      <div class="wrap">
-        <h2>Questions people actually ask</h2>
-        <dl>
-          <div>
-            <dt>Where is my guest list stored?</dt>
-            <dd>
-              In your browser, on your own device. There is no account and no server to send it to
-              — TIKTAK has no database at all. The only network requests it ever makes are a
-              licence check when you activate Pro, and a privacy-friendly page counter.
-            </dd>
+      <section class="pricing" id="pricing">
+        <div class="wrap">
+          <h2>Free to plan a seating chart. $19 once to print clean.</h2>
+          <p class="line">
+            The wedding seating chart maker is free forever for guests, tables, constraints,
+            auto-arrange and CSV export. $19 once &mdash; not a subscription &mdash; for place
+            cards, escort cards, and the full guest list for the door.
+          </p>
+        </div>
+      </section>
+
+      <section class="faq" id="faq">
+        <div class="wrap">
+          <h2>Seating chart maker FAQ</h2>
+          <div class="accordion">
+            <details open>
+              <summary><h3>Where is my guest list stored?</h3></summary>
+              <p>
+                In your browser, on your own device. There is no account and no server to send it to
+                — TIKTAK has no database at all. The only network requests it ever makes are a
+                licence check when you activate Pro, and a privacy-friendly page counter.
+              </p>
+            </details>
+            <details>
+              <summary><h3>What happens if I clear my browser?</h3></summary>
+              <p>
+                You lose the plan, the same way you would lose an unsaved document. Use
+                <em>Project &rarr; Export project file</em> to save a copy you can keep. That file
+                is the backup.
+              </p>
+            </details>
+            <details>
+              <summary><h3>Can I work from two computers?</h3></summary>
+              <p>
+                Yes, through the project file: export it on one machine, open it on the other. There
+                is no live sync, because that would need the server TIKTAK deliberately does not
+                have.
+              </p>
+            </details>
+            <details>
+              <summary><h3>Is this a subscription?</h3></summary>
+              <p>
+                No. $19 once, for good. Planning — guests, tables, constraints, auto-arrange and CSV
+                export — is free and unlimited whether you ever pay or not.
+              </p>
+            </details>
+            <details>
+              <summary><h3>What exactly do I get for the $19?</h3></summary>
+              <p>
+                The things you print and hand out: place cards for every seat, escort cards for the
+                entrance, the complete A&ndash;Z guest list, and a chart with no watermark. The
+                floor plan and the per-table lists are free either way.
+              </p>
+            </details>
+            <details>
+              <summary><h3>How many guests can it handle?</h3></summary>
+              <p>
+                Unlimited on both tiers. It is built and tested against a thousand guests, which is
+                well past the point where most venues run out of room.
+              </p>
+            </details>
+            <details>
+              <summary><h3>Does it work on a phone?</h3></summary>
+              <p>
+                You can view a plan and export from a phone. Arranging a room really wants a bigger
+                screen, so on a small one TIKTAK opens read-only rather than pretending otherwise.
+              </p>
+            </details>
           </div>
-          <div>
-            <dt>What happens if I clear my browser?</dt>
-            <dd>
-              You lose the plan, the same way you would lose an unsaved document. Use
-              <em>Project &rarr; Export project file</em> to save a copy you can keep. That file is
-              the backup.
-            </dd>
-          </div>
-          <div>
-            <dt>Can I work from two computers?</dt>
-            <dd>
-              Yes, through the project file: export it on one machine, open it on the other. There
-              is no live sync, because that would need the server TIKTAK deliberately does not
-              have.
-            </dd>
-          </div>
-          <div>
-            <dt>Is this a subscription?</dt>
-            <dd>
-              No. $19 once, for good. Planning — guests, tables, constraints, auto-arrange and CSV
-              export — is free and unlimited whether you ever pay or not.
-            </dd>
-          </div>
-          <div>
-            <dt>What exactly do I get for the $19?</dt>
-            <dd>
-              The things you print and hand out: place cards for every seat, escort cards for the
-              entrance, the complete A&ndash;Z guest list, and a chart with no watermark. The floor
-              plan and the per-table lists are free either way.
-            </dd>
-          </div>
-          <div>
-            <dt>How many guests can it handle?</dt>
-            <dd>
-              Unlimited on both tiers. It is built and tested against a thousand guests, which is
-              well past the point where most venues run out of room.
-            </dd>
-          </div>
-          <div>
-            <dt>Does it work on a phone?</dt>
-            <dd>
-              You can view a plan and export from a phone. Arranging a room really wants a bigger
-              screen, so on a small one TIKTAK opens read-only rather than pretending otherwise.
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </section>
+        </div>
+      </section>
     </main>
 
     <footer>
       <div class="wrap" style="display: flex; gap: 16px; width: 100%; flex-wrap: wrap">
-        <span>TIKTAK</span>
+        <span>TIKTAK seating chart maker</span>
         <span class="spacer"></span>
-        <a href="/guides/avery-5302-place-card-template/">Avery 5302 template</a>
-        <a href="/guides/how-many-people-fit-at-a-round-table/">Guests per table</a>
-        <a href="/guides/escort-cards-vs-place-cards/">Escort vs place cards</a>
-        <a href="/app/">Open the planner</a>
+        <a href="/guides/avery-5302-place-card-template/">Avery 5302 place card template</a>
+        <a href="/guides/how-many-people-fit-at-a-round-table/">Guests per round table</a>
+        <a href="/guides/escort-cards-vs-place-cards/">Escort cards vs place cards</a>
+        <a href="/app/">Open the free planner</a>
       </div>
     </footer>
 
@@ -561,20 +752,39 @@
         if (r === 0) {
           host.appendChild(
             el('rect', {
-              x: cx - 52, y: cy - 11, width: 104, height: 22, rx: 1,
-              fill: 'var(--paper)', stroke: 'var(--ink)', 'stroke-width': 1.2,
+              x: cx - 52,
+              y: cy - 11,
+              width: 104,
+              height: 22,
+              rx: 1,
+              fill: 'var(--paper)',
+              stroke: 'var(--ink)',
+              'stroke-width': 1.2,
             }),
           );
           for (let s = 0; s < 6; s++) {
             host.appendChild(
-              el('circle', { cx: cx - 45 + s * 18, cy: cy - 19, r: 5,
-                fill: s < 4 ? 'var(--ink)' : 'var(--paper)', stroke: 'var(--slate)', 'stroke-width': 1 }),
+              el('circle', {
+                cx: cx - 45 + s * 18,
+                cy: cy - 19,
+                r: 5,
+                fill: s < 4 ? 'var(--ink)' : 'var(--paper)',
+                stroke: 'var(--slate)',
+                'stroke-width': 1,
+              }),
             );
           }
           return;
         }
         host.appendChild(
-          el('circle', { cx, cy, r, fill: 'var(--paper)', stroke: 'var(--ink)', 'stroke-width': 1.2 }),
+          el('circle', {
+            cx,
+            cy,
+            r,
+            fill: 'var(--paper)',
+            stroke: 'var(--ink)',
+            'stroke-width': 1.2,
+          }),
         );
         const seats = 10;
         for (let s = 0; s < seats; s++) {
@@ -621,7 +831,10 @@
          Loaded only on the real site, so local and preview builds neither skew
          the numbers nor log an error when the counter cannot be reached. -->
     <script>
-      if (!/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) && location.protocol === 'https:') {
+      if (
+        !/^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) &&
+        location.protocol === 'https:'
+      ) {
         const s = document.createElement('script');
         s.async = true;
         s.dataset.goatcounter = 'https://tik-tak.goatcounter.com/count';
