@@ -33,6 +33,11 @@ export default defineConfig(({ mode }) => {
             'guides/how-many-people-fit-at-a-round-table/index.html',
           ),
           cardTypes: resolve(__dirname, 'guides/escort-cards-vs-place-cards/index.html'),
+          guidesHub: resolve(__dirname, 'guides/index.html'),
+          seatingHowTo: resolve(
+            __dirname,
+            'guides/how-to-make-a-wedding-seating-chart/index.html',
+          ),
         },
       },
     },
