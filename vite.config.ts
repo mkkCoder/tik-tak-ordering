@@ -19,19 +19,15 @@ export default defineConfig(({ mode }) => {
       target: 'es2020',
       rollupOptions: {
         input: {
-          // Landing page at /, app at /app/
+          // Multi-page build: each of these is a real index.html on disk, so
+          // GitHub Pages returns HTTP 200 without an SPA fallback. Unknown
+          // paths use public/404.html (copied to dist/) and stay 404.
           main: resolve(__dirname, 'index.html'),
           app: resolve(__dirname, 'app/index.html'),
           // Guides are plain static pages: no bundle, just something for
           // search engines to find and for a person to actually read.
-          avery5302: resolve(
-            __dirname,
-            'guides/avery-5302-place-card-template/index.html',
-          ),
-          roundTable: resolve(
-            __dirname,
-            'guides/how-many-people-fit-at-a-round-table/index.html',
-          ),
+          avery5302: resolve(__dirname, 'guides/avery-5302-place-card-template/index.html'),
+          roundTable: resolve(__dirname, 'guides/how-many-people-fit-at-a-round-table/index.html'),
           cardTypes: resolve(__dirname, 'guides/escort-cards-vs-place-cards/index.html'),
         },
       },
