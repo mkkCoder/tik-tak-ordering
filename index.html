@@ -12,6 +12,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TIKTAK" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="TIKTAK — seat 200 guests without a spreadsheet" />
     <meta
       property="og:description"
@@ -19,7 +21,14 @@
     />
     <meta property="og:url" content="https://tik-tak.online/" />
     <meta property="og:image" content="https://tik-tak.online/og.png" />
+    <meta property="og:image:alt" content="A TIKTAK seating plan with seven tables" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TIKTAK — seat 200 guests without a spreadsheet" />
+    <meta
+      name="twitter:description"
+      content="Drag guests onto tables, mark who can't sit together, print the chart. Nothing leaves your browser."
+    />
+    <meta name="twitter:image" content="https://tik-tak.online/og.png" />
 
     <link
       rel="preload"
@@ -39,35 +48,56 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "TIKTAK",
-        "applicationCategory": "BusinessApplication",
-        "applicationSubCategory": "Event seating planner",
-        "operatingSystem": "Any modern web browser",
-        "url": "https://tik-tak.online/",
-        "description": "Event seating planner that runs entirely in your browser. Import a guest list, arrange tables, set seating constraints and print a seating chart.",
-        "offers": [
+        "@graph": [
           {
-            "@type": "Offer",
-            "name": "Free",
-            "price": "0",
-            "priceCurrency": "USD",
-            "description": "Unlimited guests and tables, import, constraints, auto-arrange and CSV export."
+            "@type": "Organization",
+            "@id": "https://tik-tak.online/#org",
+            "name": "TIKTAK",
+            "url": "https://tik-tak.online/",
+            "logo": "https://tik-tak.online/favicon.svg"
           },
           {
-            "@type": "Offer",
-            "name": "Pro",
-            "price": "19",
-            "priceCurrency": "USD",
-            "description": "One-time payment for clean PDF exports and printable place cards."
+            "@type": "WebSite",
+            "@id": "https://tik-tak.online/#website",
+            "url": "https://tik-tak.online/",
+            "name": "TIKTAK",
+            "publisher": { "@id": "https://tik-tak.online/#org" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "TIKTAK",
+            "applicationCategory": "BusinessApplication",
+            "applicationSubCategory": "Event seating planner",
+            "operatingSystem": "Any modern web browser",
+            "url": "https://tik-tak.online/",
+            "image": "https://tik-tak.online/og.png",
+            "isAccessibleForFree": true,
+            "publisher": { "@id": "https://tik-tak.online/#org" },
+            "description": "Event seating planner that runs entirely in your browser. Import a guest list, arrange tables, set seating constraints and print a seating chart.",
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "Free",
+                "price": "0",
+                "priceCurrency": "USD",
+                "description": "Unlimited guests and tables, import, constraints, auto-arrange and CSV export."
+              },
+              {
+                "@type": "Offer",
+                "name": "Pro",
+                "price": "19",
+                "priceCurrency": "USD",
+                "description": "One-time payment for clean PDF exports and printable place cards."
+              }
+            ],
+            "featureList": [
+              "Spreadsheet guest list import",
+              "Drag and drop table plan",
+              "Seating constraints",
+              "Automatic seating arrangement",
+              "Printable seating chart and place cards"
+            ]
           }
-        ],
-        "featureList": [
-          "Spreadsheet guest list import",
-          "Drag and drop table plan",
-          "Seating constraints",
-          "Automatic seating arrangement",
-          "Printable seating chart and place cards"
         ]
       }
     </script>
@@ -278,6 +308,15 @@
         margin: 14px 0 6px;
       }
 
+      .block h3 a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .block h3 a:hover {
+        color: var(--sage);
+      }
+
       .block p {
         margin: 0;
         color: var(--slate);
@@ -356,6 +395,7 @@
         <nav>
           <a href="#how">How it works</a>
           <a href="#pricing">Pricing</a>
+          <a href="/guides/">Guides</a>
           <a href="#faq">Questions</a>
         </nav>
       </header>
@@ -451,6 +491,50 @@
       </div>
     </section>
 
+    <section class="guides" id="guides">
+      <div class="wrap">
+        <h2>Guides from the planner</h2>
+        <p class="lede">
+          The questions people still have while the names are in a spreadsheet. Written from
+          building TIKTAK, not from a generic wedding checklist.
+        </p>
+        <div class="blocks">
+          <div class="block">
+            <h3>
+              <a href="/guides/how-to-make-a-wedding-seating-chart/">How to make a wedding seating chart</a>
+            </h3>
+            <p>
+              Import the list first. Group families before you assign a seat. Lock the top
+              table, then the people who must not sit together.
+            </p>
+          </div>
+          <div class="block">
+            <h3>
+              <a href="/guides/how-many-people-fit-at-a-round-table/">How many people fit at a round table</a>
+            </h3>
+            <p>
+              Eight comfortably on a 60-inch round, ten if you squeeze — and the same
+              arithmetic for every common diameter.
+            </p>
+          </div>
+          <div class="block">
+            <h3>
+              <a href="/guides/escort-cards-vs-place-cards/">Escort cards vs place cards</a>
+            </h3>
+            <p>
+              One sends a guest to a table. The other sends them to a chair. Typing the two
+              lists separately is how someone ends up at two tables.
+            </p>
+          </div>
+        </div>
+        <p class="lede" style="margin: 28px 0 0">
+          Also:
+          <a href="/guides/avery-5302-place-card-template/">Avery 5302 measurements and printing</a>
+          · <a href="/guides/">All guides</a>
+        </p>
+      </div>
+    </section>
+
     <section class="pricing" id="pricing">
       <div class="wrap">
         <h2>Pricing</h2>
@@ -527,6 +611,8 @@
       <div class="wrap" style="display: flex; gap: 16px; width: 100%; flex-wrap: wrap">
         <span>TIKTAK</span>
         <span class="spacer"></span>
+        <a href="/guides/">Guides</a>
+        <a href="/guides/how-to-make-a-wedding-seating-chart/">Make a seating chart</a>
         <a href="/guides/avery-5302-place-card-template/">Avery 5302 template</a>
         <a href="/guides/how-many-people-fit-at-a-round-table/">Guests per table</a>
         <a href="/guides/escort-cards-vs-place-cards/">Escort vs place cards</a>
