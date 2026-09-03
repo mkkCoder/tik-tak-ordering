@@ -64,13 +64,20 @@
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://tik-tak.online/#org",
+            "name": "TIKTAK",
+            "url": "https://tik-tak.online/",
+            "logo": "https://tik-tak.online/favicon.svg"
+          },
+          {
             "@type": "WebSite",
             "@id": "https://tik-tak.online/#website",
             "url": "https://tik-tak.online/",
             "name": "TIKTAK",
             "description": "Free wedding seating chart maker and event seating planner that runs in the browser.",
             "inLanguage": "en",
-            "publisher": { "@id": "https://tik-tak.online/#app" }
+            "publisher": { "@id": "https://tik-tak.online/#org" }
           },
           {
             "@type": ["SoftwareApplication", "WebApplication"],
@@ -90,6 +97,7 @@
             ],
             "isAccessibleForFree": true,
             "inLanguage": "en",
+            "publisher": { "@id": "https://tik-tak.online/#org" },
             "description": "Free wedding seating chart maker. Import a guest list, arrange tables, set who cannot sit together, auto-arrange seats, and print a seating chart, escort cards, and place cards. Guest lists stay on the device.",
             "offers": [
               {
@@ -395,6 +403,15 @@
         margin: 14px 0 6px;
       }
 
+      .block h3 a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .block h3 a:hover {
+        color: var(--sage);
+      }
+
       .block p {
         margin: 0;
         color: var(--slate);
@@ -508,6 +525,7 @@
         <nav aria-label="Landing">
           <a href="#how">How it works</a>
           <a href="#use-cases">Who it's for</a>
+          <a href="/guides/">Guides</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">Questions</a>
         </nav>
@@ -641,6 +659,54 @@
         </div>
       </section>
 
+      <section class="guides" id="guides">
+        <div class="wrap">
+          <h2>Guides from the planner</h2>
+          <p class="lede">
+            The questions people still have while the names are in a spreadsheet. Written from
+            building TIKTAK, not from a generic wedding checklist.
+          </p>
+          <div class="blocks">
+            <div class="block">
+              <h3>
+                <a href="/guides/how-to-make-a-wedding-seating-chart/"
+                  >How to make a wedding seating chart</a
+                >
+              </h3>
+              <p>
+                Import the list first. Group families before you assign a seat. Lock the top table,
+                then the people who must not sit together.
+              </p>
+            </div>
+            <div class="block">
+              <h3>
+                <a href="/guides/how-many-people-fit-at-a-round-table/"
+                  >How many people fit at a round table</a
+                >
+              </h3>
+              <p>
+                Eight comfortably on a 60-inch round, ten if you squeeze — and the same arithmetic
+                for every common diameter.
+              </p>
+            </div>
+            <div class="block">
+              <h3>
+                <a href="/guides/escort-cards-vs-place-cards/">Escort cards vs place cards</a>
+              </h3>
+              <p>
+                One sends a guest to a table. The other sends them to a chair. Typing the two lists
+                separately is how someone ends up at two tables.
+              </p>
+            </div>
+          </div>
+          <p class="lede" style="margin: 28px 0 0">
+            Also:
+            <a href="/guides/avery-5302-place-card-template/">Avery 5302 measurements and printing</a>
+            · <a href="/guides/">All guides</a>
+          </p>
+        </div>
+      </section>
+
       <section class="pricing" id="pricing">
         <div class="wrap">
           <h2>Free to plan a seating chart. $19 once to print clean.</h2>
@@ -718,6 +784,8 @@
       <div class="wrap" style="display: flex; gap: 16px; width: 100%; flex-wrap: wrap">
         <span>TIKTAK seating chart maker</span>
         <span class="spacer"></span>
+        <a href="/guides/">Guides</a>
+        <a href="/guides/how-to-make-a-wedding-seating-chart/">Make a seating chart</a>
         <a href="/guides/avery-5302-place-card-template/">Avery 5302 place card template</a>
         <a href="/guides/how-many-people-fit-at-a-round-table/">Guests per round table</a>
         <a href="/guides/escort-cards-vs-place-cards/">Escort cards vs place cards</a>
