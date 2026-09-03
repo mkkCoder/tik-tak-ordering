@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# /app/ is a web app, not a result we want in Search. It already sends
+# <meta name="robots" content="noindex">. Do not Disallow it: robots.txt
+# only stops fetching, so Googlebot would never see the noindex tag, and a
+# URL that the homepage links to can still appear as a snippet-less result.
+
 Sitemap: https://tik-tak.online/sitemap.xml

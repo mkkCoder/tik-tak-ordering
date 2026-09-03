@@ -26,6 +26,11 @@ export default defineConfig(({ mode }) => {
           app: resolve(__dirname, 'app/index.html'),
           // Guides are plain static pages: no bundle, just something for
           // search engines to find and for a person to actually read.
+          guidesHub: resolve(__dirname, 'guides/index.html'),
+          seatingHowTo: resolve(
+            __dirname,
+            'guides/how-to-make-a-wedding-seating-chart/index.html',
+          ),
           avery5302: resolve(__dirname, 'guides/avery-5302-place-card-template/index.html'),
           roundTable: resolve(__dirname, 'guides/how-many-people-fit-at-a-round-table/index.html'),
           cardTypes: resolve(__dirname, 'guides/escort-cards-vs-place-cards/index.html'),

@@ -45,6 +45,16 @@ const INDEXABLE = [
     maxTitle: 60,
   },
   {
+    file: 'guides/index.html',
+    canonical: 'https://tik-tak.online/guides/',
+    maxTitle: 60,
+  },
+  {
+    file: 'guides/how-to-make-a-wedding-seating-chart/index.html',
+    canonical: 'https://tik-tak.online/guides/how-to-make-a-wedding-seating-chart/',
+    maxTitle: 60,
+  },
+  {
     file: 'guides/avery-5302-place-card-template/index.html',
     canonical: 'https://tik-tak.online/guides/avery-5302-place-card-template/',
     maxTitle: 60,
@@ -109,9 +119,22 @@ describe('on-page SEO for indexable HTML', () => {
     const types = ld['@graph'].flatMap((n) =>
       Array.isArray(n['@type']) ? n['@type'] : [n['@type']],
     );
+    expect(types).toContain('Organization');
     expect(types).toContain('SoftwareApplication');
     expect(types).toContain('WebApplication');
     expect(types).toContain('FAQPage');
+  });
+
+  it('guides hub lists every article and the wedding how-to is original how-to copy', () => {
+    const hub = load('guides/index.html');
+    expect(hub).toMatch(/how-to-make-a-wedding-seating-chart/);
+    expect(hub).toMatch(/how-many-people-fit-at-a-round-table/);
+    expect(hub).toMatch(/escort-cards-vs-place-cards/);
+    expect(hub).toMatch(/avery-5302-place-card-template/);
+    const howto = load('guides/how-to-make-a-wedding-seating-chart/index.html');
+    expect(howto).toMatch(/Get the names in, not the table numbers/);
+    expect(howto).toMatch(/Mark who must sit together and who must not/);
+    expect(howto).toMatch(/Print from the plan, once/);
   });
 
   it('every indexable image has a non-empty alt', () => {
@@ -141,14 +164,16 @@ describe('robots, sitemap and GitHub Pages 404', () => {
   it('lists only canonical production URLs with lastmod and changefreq', () => {
     const xml = load('public/sitemap.xml');
     expect(xml).toContain('https://tik-tak.online/');
+    expect(xml).toContain('https://tik-tak.online/guides/');
+    expect(xml).toContain('https://tik-tak.online/guides/how-to-make-a-wedding-seating-chart/');
     expect(xml).toContain('https://tik-tak.online/guides/avery-5302-place-card-template/');
     expect(xml).toContain('https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/');
     expect(xml).toContain('https://tik-tak.online/guides/escort-cards-vs-place-cards/');
     expect(xml).toContain('https://tik-tak.online/privacy/');
     expect(xml).toContain('https://tik-tak.online/terms/');
     expect(xml).not.toContain('http://tik-tak.online');
-    expect((xml.match(/<lastmod>/g) ?? []).length).toBe(6);
-    expect((xml.match(/<changefreq>/g) ?? []).length).toBe(6);
+    expect((xml.match(/<lastmod>/g) ?? []).length).toBe(8);
+    expect((xml.match(/<changefreq>/g) ?? []).length).toBe(8);
     expect(xml).not.toContain('/app/');
   });
 
