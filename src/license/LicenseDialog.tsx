@@ -11,7 +11,7 @@ export const PRICE = '$19';
  * itself, so this is the plain share link exactly as the dashboard gives it.
  */
 export const BUY_URL =
-  'https://tik-tak.lemonsqueezy.com/checkout/buy/a27bfe9c-e09f-4cc4-9ad0-d44d5410d29b';
+  'https://tik-tak.lemonsqueezy.com/checkout/buy/fd1a3e7c-0232-483d-a066-65879f237938';
 
 /** What the money actually buys, in the order a person cares about it. */
 export const PRO_INCLUDES = [
