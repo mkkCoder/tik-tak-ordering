@@ -52,6 +52,8 @@ export function LicenseDialog({
   const [stage, setStage] = useState<Stage>('offer');
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
+  /** Checkout stays disabled until they accept Terms + Privacy (off by default). */
+  const [acceptedLegal, setAcceptedLegal] = useState(false);
 
   const activate = useLicenseStore((s) => s.activate);
   const deactivate = useLicenseStore((s) => s.deactivate);
@@ -63,7 +65,10 @@ export function LicenseDialog({
   const notify = useUiStore((s) => s.notify);
 
   useEffect(() => {
-    if (open) setStage('offer');
+    if (open) {
+      setStage('offer');
+      setAcceptedLegal(false);
+    }
   }, [open]);
 
   function close() {
@@ -195,7 +200,7 @@ export function LicenseDialog({
       onClose={close}
       width={460}
       footer={
-        <Button variant="primary" data-autofocus disabled={busy} onClick={buy}>
+        <Button variant="primary" data-autofocus disabled={busy || !acceptedLegal} onClick={buy}>
           {busy ? 'Opening…' : `Unlock for ${PRICE}`}
         </Button>
       }
@@ -234,6 +239,38 @@ export function LicenseDialog({
           {PRICE} once. Not a subscription, no account, yours for good — and a calligrapher charges
           more than that for four cards.
         </p>
+
+        <label className="flex cursor-pointer items-start gap-2 text-[13px] text-slate">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[color:var(--sage)]"
+            checked={acceptedLegal}
+            onChange={(e) => setAcceptedLegal(e.target.checked)}
+          />
+          <span>
+            I agree to the{' '}
+            <a
+              href="/terms/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink underline underline-offset-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Terms
+            </a>{' '}
+            and{' '}
+            <a
+              href="/privacy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink underline underline-offset-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Privacy Policy
+            </a>
+            .
+          </span>
+        </label>
 
         {/* Secondary, but not hidden. Most people never need it — the overlay
             activates Pro on this page and the receipt email's link activates it

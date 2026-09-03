@@ -59,6 +59,16 @@ const INDEXABLE = [
     canonical: 'https://tik-tak.online/guides/escort-cards-vs-place-cards/',
     maxTitle: 60,
   },
+  {
+    file: 'privacy/index.html',
+    canonical: 'https://tik-tak.online/privacy/',
+    maxTitle: 60,
+  },
+  {
+    file: 'terms/index.html',
+    canonical: 'https://tik-tak.online/terms/',
+    maxTitle: 60,
+  },
 ] as const;
 
 describe('on-page SEO for indexable HTML', () => {
@@ -134,9 +144,11 @@ describe('robots, sitemap and GitHub Pages 404', () => {
     expect(xml).toContain('https://tik-tak.online/guides/avery-5302-place-card-template/');
     expect(xml).toContain('https://tik-tak.online/guides/how-many-people-fit-at-a-round-table/');
     expect(xml).toContain('https://tik-tak.online/guides/escort-cards-vs-place-cards/');
+    expect(xml).toContain('https://tik-tak.online/privacy/');
+    expect(xml).toContain('https://tik-tak.online/terms/');
     expect(xml).not.toContain('http://tik-tak.online');
-    expect((xml.match(/<lastmod>/g) ?? []).length).toBe(4);
-    expect((xml.match(/<changefreq>/g) ?? []).length).toBe(4);
+    expect((xml.match(/<lastmod>/g) ?? []).length).toBe(6);
+    expect((xml.match(/<changefreq>/g) ?? []).length).toBe(6);
     expect(xml).not.toContain('/app/');
   });
 

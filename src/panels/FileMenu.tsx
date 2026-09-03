@@ -105,6 +105,29 @@ export function FileMenu() {
           >
             New project…
           </MenuItem>
+          <div className="my-1 h-px bg-[color:var(--hairline)]" />
+          <a
+            role="menuitem"
+            href="/privacy/"
+            className={cx(
+              'block w-full px-3 py-1.5 text-left text-[13px] text-ink no-underline',
+              'hover:bg-[color:rgba(22,32,43,0.06)] focus-visible:bg-[color:rgba(22,32,43,0.06)]',
+            )}
+            onClick={() => setOpen(false)}
+          >
+            Privacy
+          </a>
+          <a
+            role="menuitem"
+            href="/terms/"
+            className={cx(
+              'block w-full px-3 py-1.5 text-left text-[13px] text-ink no-underline',
+              'hover:bg-[color:rgba(22,32,43,0.06)] focus-visible:bg-[color:rgba(22,32,43,0.06)]',
+            )}
+            onClick={() => setOpen(false)}
+          >
+            Terms
+          </a>
         </div>
       )}
 

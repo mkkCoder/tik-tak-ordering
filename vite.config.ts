@@ -29,6 +29,8 @@ export default defineConfig(({ mode }) => {
           avery5302: resolve(__dirname, 'guides/avery-5302-place-card-template/index.html'),
           roundTable: resolve(__dirname, 'guides/how-many-people-fit-at-a-round-table/index.html'),
           cardTypes: resolve(__dirname, 'guides/escort-cards-vs-place-cards/index.html'),
+          privacy: resolve(__dirname, 'privacy/index.html'),
+          terms: resolve(__dirname, 'terms/index.html'),
         },
       },
     },
