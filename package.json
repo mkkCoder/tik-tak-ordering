@@ -14,6 +14,7 @@
     "size": "npm run build && node scripts/size.mjs",
     "e2e": "node scripts/e2e.mjs",
     "shots": "node scripts/shots.mjs && node scripts/og.mjs",
+    "pins": "node scripts/generate-pins.js",
     "fonts": "node scripts/build-pdf-font.mjs"
   },
   "dependencies": {
