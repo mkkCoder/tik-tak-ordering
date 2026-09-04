@@ -21,7 +21,7 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
   return (
     <header
       className={cx(
-        'flex min-h-12 shrink-0 items-center gap-2 border-b border-[color:var(--hairline)] bg-linen px-2 sm:gap-3 sm:px-3',
+        'flex min-h-12 shrink-0 items-center gap-2 border-b border-[color:var(--hairline)] bg-linen px-2 lg:gap-3 lg:px-3',
         'pt-[max(0px,env(safe-area-inset-top))] pl-[max(0.5rem,env(safe-area-inset-left))] pr-[max(0.5rem,env(safe-area-inset-right))]',
       )}
     >
@@ -60,13 +60,13 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
         aria-label="Event name"
         placeholder="Untitled event"
         className={cx(
-          'h-11 min-w-0 max-w-[22rem] flex-1 rounded-[3px] border border-transparent bg-transparent px-2 sm:h-8',
-          'text-[16px] text-ink placeholder:text-slate/70 sm:text-[14px]',
+          'h-11 min-w-0 max-w-[22rem] flex-1 rounded-[3px] border border-transparent bg-transparent px-2 lg:h-8',
+          'text-[16px] text-ink placeholder:text-slate/70 lg:text-[14px]',
           'hover:border-[color:var(--hairline)] focus:border-sage focus:bg-paper focus:outline-none',
         )}
       />
 
-      <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-1 lg:gap-2">
         {violationCount > 0 && (
           <Button
             variant="quiet"

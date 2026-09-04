@@ -119,7 +119,7 @@ body[data-tiktak-app] {
  * Phone ergonomics for the planner shell. Dense desktop chrome stays as-is;
  * below the phone breakpoint we enlarge taps and stop iOS input zoom.
  */
-@media (max-width: 639px) {
+@media (max-width: 1023px) {
   body[data-tiktak-app] input:not([type='checkbox']):not([type='radio']),
   body[data-tiktak-app] textarea,
   body[data-tiktak-app] select {

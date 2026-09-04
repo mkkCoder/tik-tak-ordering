@@ -41,7 +41,7 @@ export function FirstRun({ boot }: { boot: BootState }) {
   if (!showing) return null;
 
   return (
-    <div className="flex shrink-0 flex-col gap-2 border-b border-[color:var(--hairline)] bg-[color:rgba(78,107,87,0.09)] px-3 py-2 sm:flex-row sm:items-center sm:gap-3">
+    <div className="flex shrink-0 flex-col gap-2 border-b border-[color:var(--hairline)] bg-[color:rgba(78,107,87,0.09)] px-3 py-2 lg:flex-row lg:items-center lg:gap-3">
       <p className="min-w-0 flex-1 text-[13px] text-ink">
         This is a sample event, so you can try things straight away. Everything is saved in this
         browser only — export your project to keep a backup.
@@ -49,7 +49,7 @@ export function FirstRun({ boot }: { boot: BootState }) {
       <div className="flex flex-wrap gap-2">
         <Button
           size="sm"
-          className="min-h-11 px-3 sm:min-h-0 sm:h-7"
+          className="min-h-11 px-3 lg:min-h-0 lg:h-7"
           onClick={() => {
             withHistoryGroup(() => useProjectStore.getState().newProject());
             clearHistory();
@@ -62,7 +62,7 @@ export function FirstRun({ boot }: { boot: BootState }) {
         <Button
           variant="quiet"
           size="sm"
-          className="min-h-11 px-3 sm:min-h-0 sm:h-7"
+          className="min-h-11 px-3 lg:min-h-0 lg:h-7"
           onClick={() => {
             markSeen();
             setShowing(false);
