@@ -19,7 +19,12 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
   const setLayout = useUiStore((s) => s.setLayout);
 
   return (
-    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-[color:var(--hairline)] bg-linen px-3">
+    <header
+      className={cx(
+        'flex min-h-12 shrink-0 items-center gap-2 border-b border-[color:var(--hairline)] bg-linen px-2 lg:gap-3 lg:px-3',
+        'pt-[max(0px,env(safe-area-inset-top))] pl-[max(0.5rem,env(safe-area-inset-left))] pr-[max(0.5rem,env(safe-area-inset-right))]',
+      )}
+    >
       {!compact && (
       <IconButton
         label={leftCollapsed ? 'Show guest list' : 'Hide guest list'}
@@ -41,7 +46,7 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
       </IconButton>
       )}
 
-      <span className="font-serif text-[16px] font-semibold tracking-[0.01em] text-ink">
+      <span className="shrink-0 font-serif text-[16px] font-semibold tracking-[0.01em] text-ink">
         TIKTAK
       </span>
 
@@ -55,20 +60,24 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
         aria-label="Event name"
         placeholder="Untitled event"
         className={cx(
-          'h-8 min-w-0 max-w-[22rem] flex-1 rounded-[3px] border border-transparent bg-transparent px-2',
-          'text-[14px] text-ink placeholder:text-slate/70',
+          'h-11 min-w-0 max-w-[22rem] flex-1 rounded-[3px] border border-transparent bg-transparent px-2 lg:h-8',
+          'text-[16px] text-ink placeholder:text-slate/70 lg:text-[14px]',
           'hover:border-[color:var(--hairline)] focus:border-sage focus:bg-paper focus:outline-none',
         )}
       />
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-1 lg:gap-2">
         {violationCount > 0 && (
           <Button
             variant="quiet"
             size="sm"
             aria-pressed={violationsOpen}
+            aria-label={`${violationCount} ${violationCount === 1 ? 'conflict' : 'conflicts'}`}
             onClick={() => setViolationsOpen(!violationsOpen)}
-            className="text-flag hover:bg-[color:rgba(179,38,30,0.08)] hover:text-flag"
+            className={cx(
+              'text-flag hover:bg-[color:rgba(179,38,30,0.08)] hover:text-flag',
+              compact && 'h-11 min-w-11 px-2',
+            )}
           >
             <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
               <path
@@ -81,7 +90,10 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
               <path d="M8 6.4v3.1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
               <circle cx="8" cy="11.3" r="0.75" fill="currentColor" />
             </svg>
-            {violationCount} {violationCount === 1 ? 'conflict' : 'conflicts'}
+            <span className={compact ? 'sr-only' : undefined}>
+              {violationCount} {violationCount === 1 ? 'conflict' : 'conflicts'}
+            </span>
+            {compact && <span aria-hidden="true">{violationCount}</span>}
           </Button>
         )}
         {!compact && (
@@ -92,8 +104,8 @@ export function Toolbar({ compact = false }: { compact?: boolean } = {}) {
             <AutoArrangeButton />
           </>
         )}
-        <ExportMenu />
-        <FileMenu />
+        <ExportMenu compact={compact} />
+        <FileMenu compact={compact} />
       </div>
 
       <ImportDialog open={importing} onClose={() => setImporting(false)} />

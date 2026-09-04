@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Page not found | TIKTAK</title>
     <meta
       name="description"
@@ -27,6 +27,8 @@
         font-weight: 100 900;
         src: url('/fonts/fraunces-latin-full-normal.woff2') format('woff2-variations');
       }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       :root {
         --paper: #fbf9f5;
         --ink: #16202b;
@@ -36,14 +38,17 @@
       }
       body {
         margin: 0;
-        min-height: 100vh;
+        overflow-x: hidden;
+        min-height: 100dvh;
         display: flex;
         align-items: center;
         justify-content: center;
         background: var(--paper);
         color: var(--ink);
         font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
-        padding: 24px;
+        padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+          max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+        overflow-x: hidden;
       }
       main {
         max-width: 36rem;
@@ -69,6 +74,8 @@
       }
       .cta {
         display: inline-flex;
+        align-items: center;
+        min-height: 44px;
         margin-top: 8px;
         background: var(--sage);
         color: var(--paper);

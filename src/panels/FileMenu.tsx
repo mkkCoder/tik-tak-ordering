@@ -17,7 +17,7 @@ import { recordNewEvent } from '@/app/eventsPlanned';
  * leave the current plan untouched and say so, because the alternative — a
  * blank canvas where the wedding used to be — is unrecoverable.
  */
-export function FileMenu() {
+export function FileMenu({ compact = false }: { compact?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -75,6 +75,7 @@ export function FileMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="menu"
+        className={compact ? 'h-11 px-3' : undefined}
       >
         Project
         <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true">

@@ -75,7 +75,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
         ref={ref}
         id={inputId}
         className={cx(
-          'h-8 w-full rounded-[3px] border border-[color:var(--hairline)] bg-paper px-2 text-[13px]',
+          'h-11 w-full rounded-[3px] border border-[color:var(--hairline)] bg-paper px-2 text-[16px] lg:h-8 lg:text-[13px]',
           'text-ink placeholder:text-slate/60 focus:border-sage focus:outline-none',
           'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-sage',
           className,
@@ -108,7 +108,7 @@ export function Select({
       <select
         id={id}
         className={cx(
-          'h-8 w-full rounded-[3px] border border-[color:var(--hairline)] bg-paper px-1.5 text-[13px] text-ink',
+          'h-11 w-full rounded-[3px] border border-[color:var(--hairline)] bg-paper px-1.5 text-[16px] text-ink lg:h-8 lg:text-[13px]',
           'focus:border-sage focus:outline-none',
           className,
         )}
@@ -195,8 +195,8 @@ export function Dialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        style={{ width }}
-        className="max-h-[85vh] overflow-auto rounded-[4px] border border-[color:var(--hairline)] bg-paper shadow-lift tk-scroll"
+        style={{ width: `min(100%, ${width}px)` }}
+        className="max-h-[min(85vh,85dvh)] w-full overflow-auto rounded-[4px] border border-[color:var(--hairline)] bg-paper shadow-lift tk-scroll"
       >
         <div className="border-b border-[color:var(--hairline)] px-4 py-3">
           <h2 id={titleId} className="font-serif text-[17px] font-semibold leading-tight">
@@ -227,7 +227,7 @@ export function IconButton({
       aria-label={label}
       title={label}
       className={cx(
-        'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[3px] text-slate',
+        'relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[3px] text-slate lg:h-7 lg:w-7',
         'transition-colors hover:bg-[color:rgba(22,32,43,0.07)] hover:text-ink',
         'disabled:cursor-not-allowed disabled:opacity-40',
         className,

@@ -27,8 +27,8 @@ export function CanvasToolbar({
   }
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-3">
-      <div className="pointer-events-auto flex items-center gap-1 rounded-[4px] border border-[color:var(--hairline)] bg-linen/95 p-1 shadow-lift backdrop-blur">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <div className="pointer-events-auto flex max-w-[calc(100%-0.5rem)] flex-wrap items-center justify-center gap-1 rounded-[4px] border border-[color:var(--hairline)] bg-linen/95 p-1 shadow-lift backdrop-blur">
         <span className="px-2 text-micro text-slate">Round</span>
         {ROUND_SIZES.map((seats) => (
           <Button

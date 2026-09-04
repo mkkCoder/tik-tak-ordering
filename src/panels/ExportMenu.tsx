@@ -15,7 +15,7 @@ import { track } from '@/analytics';
 /** Which export dialog sent someone to the paywall, so we can send them back. */
 type Origin = 'pdf' | 'cards';
 
-export function ExportMenu() {
+export function ExportMenu({ compact = false }: { compact?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [pdfOpen, setPdfOpen] = useState(false);
   const [licenseOpen, setLicenseOpen] = useState(false);
@@ -64,7 +64,13 @@ export function ExportMenu() {
 
   return (
     <div className="relative" ref={ref}>
-      <Button variant="primary" size="sm" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className={compact ? 'h-11 px-3' : undefined}
+      >
         Export
         <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true">
           <path

@@ -124,7 +124,9 @@ function CompactLayout({ viewport }: { viewport: 'phone' | 'tablet' }) {
         <Notices />
       </main>
 
-      {!readOnly && <BottomSheet />}
+      {/* Guest list stays available on phone for viewing (and light edits); table
+          arrangement is what stays desktop/tablet-only. */}
+      <BottomSheet />
     </div>
   );
 }

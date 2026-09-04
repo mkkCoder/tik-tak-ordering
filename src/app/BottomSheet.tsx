@@ -23,14 +23,15 @@ export function BottomSheet() {
     <div
       className={cx(
         'absolute inset-x-0 bottom-0 z-30 flex flex-col border-t border-[color:var(--hairline)] bg-linen shadow-lift',
-        expanded ? 'h-[55%]' : 'h-11',
+        'pb-[env(safe-area-inset-bottom)]',
+        expanded ? 'h-[min(55%,calc(100%-env(safe-area-inset-bottom)))] max-h-[70%]' : 'h-auto',
       )}
     >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={expanded}
-        className="flex h-11 shrink-0 items-center gap-2 px-3 text-left"
+        className="flex h-11 min-h-11 shrink-0 items-center gap-2 px-3 text-left"
       >
         <svg
           viewBox="0 0 16 16"
