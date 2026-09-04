@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Privacy Policy | TIKTAK</title>
     <meta
       name="description"
@@ -96,12 +96,20 @@
         color-scheme: light;
       }
 
-      * {
+      *, *::before, *::after {
         box-sizing: border-box;
       }
 
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+
       body {
         margin: 0;
+        min-height: 100dvh;
+        overflow-x: hidden;
         background: var(--paper);
         color: var(--ink);
         font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
@@ -148,14 +156,16 @@
       .wrap {
         max-width: 1080px;
         margin: 0 auto;
-        padding: 0 24px;
+        padding-left: max(clamp(1rem, 4vw, 2.5rem), env(safe-area-inset-left));
+        padding-right: max(clamp(1rem, 4vw, 2.5rem), env(safe-area-inset-right));
       }
 
       header.top {
         display: flex;
         align-items: center;
         gap: 16px;
-        padding: 20px 0;
+        padding-top: max(1.25rem, env(safe-area-inset-top));
+        padding-bottom: 1.25rem;
         border-bottom: 1px solid var(--hairline);
       }
 
@@ -170,18 +180,24 @@
       .top nav {
         margin-left: auto;
         display: flex;
-        gap: 20px;
+        flex-wrap: wrap;
+        gap: 8px 16px;
         font-size: 14px;
+        justify-content: flex-end;
       }
 
       .top nav a {
         color: var(--slate);
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        text-decoration: none;
       }
 
       article {
         max-width: 40rem;
         margin: 0 auto;
-        padding: 40px 24px 80px;
+        padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 4vw, 1.5rem) max(5rem, calc(3rem + env(safe-area-inset-bottom)));
       }
 
       .updated {
@@ -192,7 +208,7 @@
 
       footer {
         border-top: 1px solid var(--hairline);
-        padding: 24px 0 48px;
+        padding: 24px 0 max(48px, calc(24px + env(safe-area-inset-bottom)));
         font-size: 14px;
         color: var(--slate);
       }

@@ -70,8 +70,19 @@
   color-scheme: light;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 html,
@@ -100,6 +111,20 @@ body {
 body[data-tiktak-app] {
   overflow: hidden;
   background: var(--linen);
+  /* Dynamic viewport height tracks mobile browser chrome. */
+  min-height: 100dvh;
+}
+
+/*
+ * Phone ergonomics for the planner shell. Dense desktop chrome stays as-is;
+ * below the phone breakpoint we enlarge taps and stop iOS input zoom.
+ */
+@media (max-width: 639px) {
+  body[data-tiktak-app] input:not([type='checkbox']):not([type='radio']),
+  body[data-tiktak-app] textarea,
+  body[data-tiktak-app] select {
+    font-size: 16px;
+  }
 }
 
 /* Focus is always visible, never removed. */

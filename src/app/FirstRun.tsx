@@ -41,32 +41,36 @@ export function FirstRun({ boot }: { boot: BootState }) {
   if (!showing) return null;
 
   return (
-    <div className="flex shrink-0 items-center gap-3 border-b border-[color:var(--hairline)] bg-[color:rgba(78,107,87,0.09)] px-3 py-2">
+    <div className="flex shrink-0 flex-col gap-2 border-b border-[color:var(--hairline)] bg-[color:rgba(78,107,87,0.09)] px-3 py-2 sm:flex-row sm:items-center sm:gap-3">
       <p className="min-w-0 flex-1 text-[13px] text-ink">
         This is a sample event, so you can try things straight away. Everything is saved in this
         browser only — export your project to keep a backup.
       </p>
-      <Button
-        size="sm"
-        onClick={() => {
-          withHistoryGroup(() => useProjectStore.getState().newProject());
-          clearHistory();
-          markSeen();
-          setShowing(false);
-        }}
-      >
-        Start a blank event
-      </Button>
-      <Button
-        variant="quiet"
-        size="sm"
-        onClick={() => {
-          markSeen();
-          setShowing(false);
-        }}
-      >
-        Keep exploring
-      </Button>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          size="sm"
+          className="min-h-11 px-3 sm:min-h-0 sm:h-7"
+          onClick={() => {
+            withHistoryGroup(() => useProjectStore.getState().newProject());
+            clearHistory();
+            markSeen();
+            setShowing(false);
+          }}
+        >
+          Start a blank event
+        </Button>
+        <Button
+          variant="quiet"
+          size="sm"
+          className="min-h-11 px-3 sm:min-h-0 sm:h-7"
+          onClick={() => {
+            markSeen();
+            setShowing(false);
+          }}
+        >
+          Keep exploring
+        </Button>
+      </div>
     </div>
   );
 }
